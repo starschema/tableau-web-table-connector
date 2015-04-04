@@ -1,5 +1,5 @@
 # CoffeeScript version of Google Spreadsheet Driver for Tableau Data Web Connector
-# Tamas Foldi, databoss.starschema.net
+# Tamas Foldi, http://databoss.starschema.net
 
 init = ->
   if !tableau
@@ -39,8 +39,6 @@ getColumnHeaders = ->
           fieldNames.push key[4..]
           fieldTypes.push fieldType
       tableau.headersCallback fieldNames, fieldTypes
-      return
-  return
 
 getTableData = (lastRecordNumber) ->
   tableau.log 'spreadsheets - getColumnHeaders connectionData=' + tableau.connectionData
