@@ -1,5 +1,4 @@
 # CoffeeScript version of Google Spreadsheet Driver for Tableau Data Web Connector
-# Tamas Foldi, http://databoss.starschema.net
 
 init = ->
   if !tableau
