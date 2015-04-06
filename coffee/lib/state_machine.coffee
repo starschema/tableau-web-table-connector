@@ -17,22 +17,18 @@ stateMachine = (startState, stateList, transitionHandlers={})->
       transition(data,from,to)
 
   # Shortcut for getting a transitions name
-  transitionName = (from,to)-> "#{from} > #{to}"
-
-  # Helper to trigger the proper handler for each transition and run
-  # an "any transition handler" identified by the "*".
-  handleTransition = (from, to)->
-    runTransitions(from, to, ["leave #{from}", transitionName(from,to),"*", "enter #{to}"])
+  nameOf = (from,to)-> "#{from} > #{to}"
 
   # The main transition function.
   #
   # Transition to a new state and use the history to figure out which
   # state we came from
-  transitionTo = (to)->
+  transitionTo = (to, withData={})->
     return unless _.contains(stateList, to)
     from = _.last history
     return if to == from
-    handleTransition(from,to)
+    _.extend data, withData
+    runTransitions(from, to, ["leave #{from}", nameOf(from,to),"*", "enter #{to}"])
     history.push(to)
 
   # Go back in history
@@ -43,6 +39,7 @@ stateMachine = (startState, stateList, transitionHandlers={})->
     # the new tab and transitions
     to: transitionTo
     back: goBack
+    data: -> data
   }
 
 # Provide a wizzard-like interface using the stateMachine.
@@ -74,7 +71,6 @@ wizzard = (startState, steps, transitionHandlers={})->
   sm
 
 
-root = exports ? this
-_.extend root,
+_.extend module.exports,
   stateMachine: stateMachine
   wizzard: wizzard

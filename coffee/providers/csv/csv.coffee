@@ -6,7 +6,6 @@ tableSource = require '../../lib/table_source'
 _.extend exports,
   name: "CSV Data"
   template: require './form.jade'
-
   loader: (errorHandler=_.noop)->
     # Our ajax parameters are simple
     ajaxParameterGenerator = (params)->

@@ -41,6 +41,7 @@ _.mixin
 templates =
   tablePreview : require './table_preview.jade'
   sourceSelect : require './source_select.jade'
+  providerForms: require './provider_forms.jade'
 
 
 # Renders a template available at *templateSel* into an HTML element
@@ -73,20 +74,12 @@ dataKeyValueReducer = (dataField)->
     memo[$e.data(dataField)] = $e.realVal()
     memo
 
-# TABLEAU CALLBACKS
-# -----------------
 
-# Initializes the tableau connection
-init = ->
-  unless tableau
-    alert 'init- tableau NOT defined!'
-    return
-  tableau.scriptVersion = '1.0'
-  tableau.initCallback()
+previewErrorHandler = (err,args...)->
+  $('#errorText').text(err.toString())
+  mainTabs.to('error', err: err, args: args)
 
-
-# Forward the shutdown to tablaus shutdown
-shutdown = -> tableau.shutdownCallback()
+importErrorHandler = previewErrorHandler
 
 
 mainTabs = stateMachine.wizzard "start", {
@@ -94,6 +87,8 @@ mainTabs = stateMachine.wizzard "start", {
     loading:"#loading",
     preview:"#data-preview"
     import:"#importing",
+
+    error: '#error'
   },
 
   "start > loading": (data)->
@@ -110,7 +105,7 @@ mainTabs = stateMachine.wizzard "start", {
     # Append to the existing state data so we can use it on import
     _.extend data, formData, _source: dataSource
 
-    loader = providers[dataSource].loader()
+    loader = providers[dataSource].loader(previewErrorHandler)
     loader formData, (table)->
       renderInto '#data-preview-table', templates.tablePreview,
         cols:tableSource.getColumns(table)
@@ -127,8 +122,10 @@ mainTabs = stateMachine.wizzard "start", {
     tableau.connectionName = 'Google Spreadsheet Data'
     tableau.submit()
 
-  "preview > start": ->
+  "start > import": (data)->
 
+
+  # Show and hide the source selector
   "enter start": -> $('#select-source-wrapper').fadeIn(100)
   "leave start": -> $('#select-source-wrapper').fadeOut(100)
 
@@ -140,17 +137,35 @@ getConnectionData = -> JSON.parse(tableau.connectionData)
 getImportedColumns = (cols)-> _.filter(cols, (c)->c.import )
 
 # Helper to load the table from the tableau connection data.
-loadFromConnectionData = (data,callback)->
-  loader = providers[data._source].loader()
+loadFromConnectionData = (data, errorHander, callback)->
+  loader = providers[data._source].loader(errorHandler)
   loader data, (table)->
     callback(table)
+
+# TABLEAU CALLBACKS
+# -----------------
+
+
+# Initializes the tableau connection
+init = ->
+  unless tableau
+    alert 'init- tableau NOT defined!'
+    return
+  tableau.scriptVersion = '1.0'
+  tableau.initCallback()
+
+
+# Forward the shutdown to tablaus shutdown
+shutdown = -> tableau.shutdownCallback()
+
 
 # Tableau callback to get the headers from the spreadsheet
 getColumnHeaders = ->
   data = getConnectionData()
-  loadFromConnectionData data, (table)->
-    columns = _.filter( data._columns, (c)-> c.import ) # tableSource.getColumns(table)
+  loadFromConnectionData data, importErrorHandler, (table)->
+    columns = getImportedColumns(data._columns)
     tableau.headersCallback( _.pluck(columns, 'name'), _.pluck(columns, 'type'))
+
 
 getTableData = (lastRecordNumber) ->
   # Since we are downloading the spreadsheet as-is
@@ -160,32 +175,31 @@ getTableData = (lastRecordNumber) ->
     return
 
   data = getConnectionData()
-  loadFromConnectionData data, (table)->
+
+  loadFromConnectionData data, importErrorHandler, (table)->
+    # create an old name -> new name map
     columnNameMap = _.reduce getImportedColumns(data._columns),
       ((memo,c)-> memo[c.key] = c.name; memo)
       {}
 
-    # We need to remap the keys
+    # We need to remap the keys using the old name -> new name map
     remapper = (v,k)-> _.makePair(columnNameMap[k], v)
 
+    # Remap all rows this way
     newTable = _.map table, (row)-> _.remapObject( row, remapper )
-    console.log "NEW TABLE:", newTable
 
-    tableau.dataCallback( table, -1 )
+    # Pass the data to tableau
+    tableau.dataCallback( newTable, -1 )
 
-
-# The form fields we are interested in
-FORM_FIELDS = {key:"#key", tab:"#tab", _source: "#select-source" }
 
 $(document).ready ->
 
-  $("[data-tableau-provider]").each ->
-    $t = $(this)
-    $t.html( providers[$t.data('tableau-provider')].template() )
-
+  # Render the providers forms
+  renderInto "#provider-forms", templates.providerForms, providers:providers
   # Add all known providers to the provider dropdown
   renderInto '#select-source', templates.sourceSelect, providers:providers
 
+  # Dirty selector for provider selection via the dropdown
   lastSource = _.keys(providers)[0]
   $('#select-source').change ->
     source = $(this).val()
@@ -194,6 +208,8 @@ $(document).ready ->
     $("[data-tableau-provider=\"#{lastSource}\"]").fadeOut 100, ->
       $("[data-tableau-provider=\"#{source}\"]").removeClass('hide').fadeIn 100, ->
         lastSource = source
+
+  $("#provider-forms .form-select-source:first").removeClass('hide')
 
 
 # Export the tableau-specific event handlers from our coffeescript

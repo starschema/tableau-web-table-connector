@@ -15,8 +15,9 @@ loader = (ajaxParameterGenerator, deserializer, errorHandler=_.noop)->
   (params, callback)->
     ajaxOpts = _.extend {}, ajaxParameterGenerator(params),
       success: (data, textStatus, jqXHR)-> deserializer(data, params, callback)
-      error: (args...) -> errorHandler(args...)
+      error: (jqXHR, textStatus, errorThrown) -> errorHandler(errorThrown)
     tableau.log("Starting download: #{JSON.stringify(ajaxOpts)}")
+
     $.ajax ajaxOpts
 
 # Provider:

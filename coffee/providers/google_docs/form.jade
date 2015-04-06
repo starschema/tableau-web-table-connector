@@ -1,41 +1,17 @@
+h3 Connect to Google Spreadsheet
+
 .row
-  .col-sm-12
-    label(for="url") Url
-    input.form-control(type="text" data-tableau-source="csv" data-tableau-key="url")
+  .col-sm-8
+    label(for="gdoc-key") Key
+    input#gdoc-key.form-control(type="text" data-tableau-key="key" placeholder="Enter the spreadsheet key...")
     p.help-block
       | Use this key to access sample spreadsheet:
-      code http://192.168.86.200:9090/mock_data.csv
-
-.row
+      | <code>0AonYZs4MzlZbdEIycWhwSnNBSTBTUDl3WWdDSE1VbHc</code>
 
   .col-sm-4
-    label(for="csv-quotes") Quotes
-    select#csv-quotes.form-control(data-tableau-source="csv" data-tableau-key="quote")
-      option(value='"') " : Double quotes
-      option(value="'") ' : Single quote
-      option(value="`") ` : Backticks
+    label(for="gdoc-tab") Tab
+    input#gdoc-tab.form-control(type="text" data-tableau-key="tab" value="default")
     p.help-block
-      | The character used to quote the fields. Defaults to <code>"</code>. Must
-      | be a single character.
-
-  .col-sm-4
-    label(for="csv-delimieter") Delimiter
-    select#csv-delimiter.form-control(data-tableau-source="csv" data-tableau-key="delimiter")
-      option(value=",") , : Colon
-      option(value=";") ; : Semicolon
-      option(value="|") | : Pipe
-    p.help-block
-      | The character used to separate the fields. Defaults to <code>,</code>.
-      | Must be a single character.
-
-  .col-sm-4
-    label(for="csv-charset") Delimiter
-    select#csv-charset.form-control(data-tableau-key="charset")
-
-      optgroup(label="Web Standards")
-        option(value="UTF-8") UTF-8
-        option(value="ISO8859-1") ISO8859-1
-
-      optgroup(label="Central European")
-        option(value="ISO8859-2") ISO8859-2
+      | Use <code>default</code> to load the first spreadsheet, or type the
+      | name of the tab.
 

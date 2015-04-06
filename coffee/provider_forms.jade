@@ -1,0 +1,3 @@
+each provider,key in providers
+  form.form-select-source.hide(data-tableau-provider=key)
+    != provider.template()

@@ -1,7 +1,9 @@
+h3 Connect to CSV Data
+
 .row
   .col-sm-12
     label(for="url") Url
-    input.form-control(type="text" data-tableau-source="csv" data-tableau-key="url")
+    input.form-control(type="text" data-tableau-key="url")
     p.help-block
       | Use this key to access sample spreadsheet:
       code http://192.168.86.200:9090/mock_data.csv
@@ -10,7 +12,7 @@
 
   .col-sm-4
     label(for="csv-quotes") Quotes
-    select#csv-quotes.form-control(data-tableau-source="csv" data-tableau-key="quote")
+    select#csv-quotes.form-control(data-tableau-key="quote")
       option(value='"') " : Double quotes
       option(value="'") ' : Single quote
       option(value="`") ` : Backticks
