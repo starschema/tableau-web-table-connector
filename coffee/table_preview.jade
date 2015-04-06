@@ -1,0 +1,30 @@
+h4 Table structure
+
+table.table
+  tr
+    th Original key
+    th Import?
+    th Tableau name
+    th Tableau type
+
+  each type, key in cols
+    tr(data-tableau-row="#{key}")
+      th.align-right
+        = key
+        input(type="hidden" data-tableau-key="key" value=type.key)
+      td
+        input(type="checkbox" data-tableau-key="import" checked="checked")
+      td
+        input.form-control(type="text" value="#{key}" data-tableau-key="name")
+      td
+        select.form-control(data-tableau-key="type")
+          each a_type in ["string", "int", "float", "date"]
+            option(value=a_type selected=(a_type == type))= a_type
+    tr
+      td
+      td
+        small Sample data
+      td(colspan=2)
+        code= firstRow[key]
+
+
