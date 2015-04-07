@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tablea Table Web Data Connector</title>
+  <!-- Load the scripts as late as possible -->
+  <script src="dist/table-loader.js" type="text/javascript"></script>
+  <!-- Bootstrap from CDN -->
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+
+<div class="container">
+
+  <div class="page-header">
+    <div class="row">
+
+      <!-- Branding -->
+      <div class="col-md-8">
+        <h1>
+          <i class="glyphicon glyphicon-cloud-download"></i>
+          Tableau Table
+          <small>Web Data Connector</small>
+        </h1>
+      </div>
+
+      <!-- Source selector -->
+      <div class="col-md-4">
+        <div id="select-source-wrapper">
+          <label for="select-source">Data from:</label>
+          <select id="select-source" class="form-control input-sm"></select>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="step-panel active" id="docs-start">
+
+    <!-- Forms from the providers come here -->
+    <div id="provider-forms"></div>
+
+    <a href="#" class="btn btn-primary btn-lg" data-state-to="loading">Preview Data</a>
+  </div>
+
+  <div class="step-panel hide" id="error">
+    <h1>ERROR</h1>
+    <div id="errorText" class="alert alert-error">
+    </div>
+    <a href="#" class="btn btn-primary btn-lg" data-state-to="start">Re-enter connection data</a>
+  </div>
+
+  <div class="step-panel hide" id="loading">
+    <!-- Data preview -->
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <h3>Loading...</h3>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped active main-ajax-progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <span class="sr-only">In progress...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-panel hide" id="data-preview">
+    <!-- Data preview -->
+    <div class="row" id="data-preview">
+      <div class="col-md-10 col-md-offset-1">
+        <a href="#" class="btn btn-default" id="preview-back" data-state-to="start">
+          <i class=""></i>Back
+        </a>
+        <div class="pull-right">
+          <a href="#" class="btn btn-primary" id="preview-import" data-state-to="import">
+            <i class=""></i>Import data
+          </a>
+        </div>
+        <div class="preview" id="data-preview-table">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-panel hide" id="importing">
+    <!-- Data preview -->
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <h3>Importing data into Tableau...</h3>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped progress-bar-warn main-ajax-progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <span class="sr-only">In progress...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html> 
