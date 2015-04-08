@@ -84,4 +84,4 @@ the  ```Access-Control-Allow-Origin``` header set to ```*``` for the
 preview function to work.
 
 
-[demo]: https://s3.amazonaws.com/starschema.cdn/tableau-web-table-connector/v0.5/index.html
+[demo]: http://cdn.starschema.net/tableau-web-table-connector/v0.5/index.html
