@@ -2,6 +2,8 @@
 
 A mini framework for writing Tableau Web Data Connector.
 
+An online demo you can use is [available on the StarSchema CDN][demo]
+
 ## Using the connector in Tableau
 
 NOTE: You'll need Tableau 9.0 with the Web Data Connector licensed.
@@ -80,3 +82,6 @@ A full Grunt-based build is in the works.
 To allow loading from remote URLs, the target server has to reply with
 the  ```Access-Control-Allow-Origin``` header set to ```*``` for the
 preview function to work.
+
+
+[demo]: https://s3.amazonaws.com/starschema.cdn/tableau-web-table-connector/v0.5/index.html
