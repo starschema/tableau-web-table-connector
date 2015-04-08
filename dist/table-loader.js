@@ -848,7 +848,7 @@ getImportedColumns = function(cols) {
   });
 };
 
-loadFromConnectionData = function(data, errorHander, callback) {
+loadFromConnectionData = function(data, errorHandler, callback) {
   var loader;
   loader = providers[data._source].loader(errorHandler);
   return loader(data, function(table) {

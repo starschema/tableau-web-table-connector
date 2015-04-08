@@ -137,7 +137,7 @@ getConnectionData = -> JSON.parse(tableau.connectionData)
 getImportedColumns = (cols)-> _.filter(cols, (c)->c.import )
 
 # Helper to load the table from the tableau connection data.
-loadFromConnectionData = (data, errorHander, callback)->
+loadFromConnectionData = (data, errorHandler, callback)->
   loader = providers[data._source].loader(errorHandler)
   loader data, (table)->
     callback(table)
