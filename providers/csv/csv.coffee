@@ -10,7 +10,8 @@ _.extend exports,
     # Our ajax parameters are simple
     ajaxParameterGenerator = (params)->
       url: params.url
-      contentType: "text/html;charset=#{params.charset}"
+      # TODO: Setting this gives us some errors on some servers.
+      #contentType: "text/html;charset=#{params.charset}"
 
     deserializer = (res, params, callback)->
       opts = _.defaults params,

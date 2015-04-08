@@ -15196,8 +15196,7 @@ _.extend(exports, {
     }
     ajaxParameterGenerator = function(params) {
       return {
-        url: params.url,
-        contentType: "text/html;charset=" + params.charset
+        url: params.url
       };
     };
     deserializer = function(res, params, callback) {
@@ -15267,7 +15266,7 @@ jade_debug.unshift({ lineno: 9, filename: "/home/vagrant/git/google-spreadsheet-
 buf.push("<code>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.unshift({ lineno: 9, filename: jade_debug[0].filename });
-buf.push("http://databoss.starschema.net/wp-content/uploads/2015/04/mock_data.csv");
+buf.push("https://www.quandl.com/api/v1/datasets/MADDISON/GDPPC_CHN.csv");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</code>");
@@ -15415,7 +15414,7 @@ jade_debug.unshift({ lineno: 34, filename: "/home/vagrant/git/google-spreadsheet
 buf.push("\n    <label for=\"csv-charset\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.unshift({ lineno: 34, filename: jade_debug[0].filename });
-buf.push("Delimiter");
+buf.push("Charset");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</label>");
@@ -15465,6 +15464,20 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n    </select>");
 jade_debug.shift();
+jade_debug.unshift({ lineno: 44, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n    <p class=\"help-block\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+buf.push("\n      ");
+jade_debug.unshift({ lineno: 45, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("EXPERIMENTAL: depending on the server hosting the data, setting this may or may not fix");
+jade_debug.shift();
+buf.push("\n      ");
+jade_debug.unshift({ lineno: 46, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("character encoding problems.");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </p>");
+jade_debug.shift();
 jade_debug.shift();
 buf.push("\n  </div>");
 jade_debug.shift();
@@ -15473,7 +15486,7 @@ buf.push("\n</div>");
 jade_debug.shift();
 jade_debug.shift();;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3 Connect to CSV Data\n\n.row\n  .col-sm-12\n    label(for=\"url\") Url\n    input.form-control(type=\"text\" data-tableau-key=\"url\")\n    p.help-block\n      | Use this URL to load a sample CSV file:\n      code http://databoss.starschema.net/wp-content/uploads/2015/04/mock_data.csv\n\n.row\n\n  .col-sm-4\n    label(for=\"csv-quotes\") Quotes\n    select#csv-quotes.form-control(data-tableau-key=\"quote\")\n      option(value='\"') \" : Double quotes\n      option(value=\"'\") ' : Single quote\n      option(value=\"`\") ` : Backticks\n    p.help-block\n      | The character used to quote the fields. Defaults to <code>\"</code>. Must\n      | be a single character.\n\n  .col-sm-4\n    label(for=\"csv-delimieter\") Delimiter\n    select#csv-delimiter.form-control(data-tableau-source=\"csv\" data-tableau-key=\"delimiter\")\n      option(value=\",\") , : Colon\n      option(value=\";\") ; : Semicolon\n      option(value=\"|\") | : Pipe\n    p.help-block\n      | The character used to separate the fields. Defaults to <code>,</code>.\n      | Must be a single character.\n\n  .col-sm-4\n    label(for=\"csv-charset\") Delimiter\n    select#csv-charset.form-control(data-tableau-key=\"charset\")\n\n      optgroup(label=\"Web Standards\")\n        option(value=\"UTF-8\") UTF-8\n        option(value=\"ISO8859-1\") ISO8859-1\n\n      optgroup(label=\"Central European\")\n        option(value=\"ISO8859-2\") ISO8859-2\n\n");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3 Connect to CSV Data\n\n.row\n  .col-sm-12\n    label(for=\"url\") Url\n    input.form-control(type=\"text\" data-tableau-key=\"url\")\n    p.help-block\n      | Use this URL to load a sample CSV file:\n      code https://www.quandl.com/api/v1/datasets/MADDISON/GDPPC_CHN.csv\n\n.row\n\n  .col-sm-4\n    label(for=\"csv-quotes\") Quotes\n    select#csv-quotes.form-control(data-tableau-key=\"quote\")\n      option(value='\"') \" : Double quotes\n      option(value=\"'\") ' : Single quote\n      option(value=\"`\") ` : Backticks\n    p.help-block\n      | The character used to quote the fields. Defaults to <code>\"</code>. Must\n      | be a single character.\n\n  .col-sm-4\n    label(for=\"csv-delimieter\") Delimiter\n    select#csv-delimiter.form-control(data-tableau-source=\"csv\" data-tableau-key=\"delimiter\")\n      option(value=\",\") , : Colon\n      option(value=\";\") ; : Semicolon\n      option(value=\"|\") | : Pipe\n    p.help-block\n      | The character used to separate the fields. Defaults to <code>,</code>.\n      | Must be a single character.\n\n  .col-sm-4\n    label(for=\"csv-charset\") Charset\n    select#csv-charset.form-control(data-tableau-key=\"charset\")\n\n      optgroup(label=\"Web Standards\")\n        option(value=\"UTF-8\") UTF-8\n        option(value=\"ISO8859-1\") ISO8859-1\n\n      optgroup(label=\"Central European\")\n        option(value=\"ISO8859-2\") ISO8859-2\n\n    p.help-block\n      | EXPERIMENTAL: depending on the server hosting the data, setting this may or may not fix\n      | character encoding problems.\n\n\n");
 }
 };
 },{"jade/runtime":25}],30:[function(require,module,exports){
