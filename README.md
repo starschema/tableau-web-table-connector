@@ -73,3 +73,10 @@ This script runs browserify, resolves the imports and concatenates the
 javascripts.
 
 A full Grunt-based build is in the works.
+
+
+### Cross-site scripting protection
+
+To allow loading from remote URLs, the target server has to reply with
+the  ```Access-Control-Allow-Origin``` header set to ```*``` for the
+preview function to work.
