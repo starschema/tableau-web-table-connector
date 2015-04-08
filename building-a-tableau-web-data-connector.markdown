@@ -47,7 +47,10 @@ can use the <code>http-server</code> command to launch a test server
 npm install http-server -g
 
 # Starts a web server in the local directory
-http-server dist/  -p 9090
+#
+# The --cors parameter is necessary to set the  Access-Control-Allow-Origin
+# policy to "*" and allow our connector to download from foreign URLs.
+http-server dist/  -p 9090 --cors
 ```
 
 Now lets check the connector in Tableau. Select the Web Data Connector

@@ -1,3 +1,5 @@
+# CoffeeScript version of Google Spreadsheet Driver for Tableau Data Web Connector
+#
 _ = require 'underscore'
 $ = require "jquery"
 global.jQuery = $
@@ -6,15 +8,9 @@ require 'bootstrap'
 stateMachine = require './lib/state_machine'
 tableSource  = require './lib/table_source'
 
-# PROVIDERS
-# ---------
+# Loads the providers list
+providers = require '../providers/providers.coffee'
 
-providers =
-  googleDocs : require './providers/google_docs/google_docs'
-  csv        : require './providers/csv/csv'
-
-
-# CoffeeScript version of Google Spreadsheet Driver for Tableau Data Web Connector
 
 # UNDERSCORE EXTENSIONS
 # ---------------------
@@ -82,6 +78,24 @@ previewErrorHandler = (err,args...)->
 importErrorHandler = previewErrorHandler
 
 
+# Find out which source we are using
+getDataSource = -> dataSource = $('#select-source').val()
+
+# Find all inputs marked as needed for this datasource
+fetchInputs = (dataSourceName)->
+    inputs = $("[data-tableau-provider=\"#{dataSourceName}\"] [data-tableau-key]")
+    # Collect the input values into an object
+    formData = _.reduce inputs, dataKeyValueReducer('tableau-key'), {}
+
+# Submit a source for loading with tableau
+tableauSubmitWithData = (data)->
+  tableau.connectionData = JSON.stringify( data )
+  tableau.log("Connection data: #{tableau.connectionData}")
+  tableau.connectionName = 'Starschema Web Data Connector'
+  tableau.submit()
+
+
+
 mainTabs = stateMachine.wizzard "start", {
     start:"#docs-start",
     loading:"#loading",
@@ -92,16 +106,9 @@ mainTabs = stateMachine.wizzard "start", {
   },
 
   "start > loading": (data)->
-    #$('#select-source-wrapper').fadeOut(100)
-    # Find out which source we are using
-    dataSource = $('#select-source').val()
-
-    # Find all inputs marked as needed for this datasource
-    inputs = $("[data-tableau-provider=\"#{dataSource}\"] [data-tableau-key]")
-
-    # Collect the input values into an object
-    formData = _.reduce inputs, dataKeyValueReducer('tableau-key'), {}
-
+    dataSource = getDataSource()
+    formData = fetchInputs(dataSource)
+      #
     # Append to the existing state data so we can use it on import
     _.extend data, formData, _source: dataSource
 
@@ -117,12 +124,16 @@ mainTabs = stateMachine.wizzard "start", {
     data._columns = _.map $('[data-tableau-row]'), (e)->
       _.reduce $('[data-tableau-key]', e), dataKeyValueReducer('tableau-key'), {}
 
-    tableau.connectionData = JSON.stringify( data )
-    tableau.log("Connection data: #{tableau.connectionData}")
-    tableau.connectionName = 'Google Spreadsheet Data'
-    tableau.submit()
+    tableauSubmitWithData(data)
 
   "start > import": (data)->
+    dataSource = getDataSource()
+    formData = fetchInputs(dataSource)
+
+    # Append to the existing state data so we can use it on import
+    _.extend data, formData, _source: dataSource
+
+    tableauSubmitWithData(data)
 
 
   # Show and hide the source selector
@@ -158,12 +169,17 @@ init = ->
 # Forward the shutdown to tablaus shutdown
 shutdown = -> tableau.shutdownCallback()
 
+# Get the column information either from the import settings or use
+# the tables columns if no imports are specified
+getColumnInformation = (columns, table)->
+  if columns then getImportedColumns(columns) else tableSource.getColumns(table)
 
 # Tableau callback to get the headers from the spreadsheet
 getColumnHeaders = ->
   data = getConnectionData()
   loadFromConnectionData data, importErrorHandler, (table)->
-    columns = getImportedColumns(data._columns)
+    # Get the column information
+    columns = getColumnInformation( data._columns, table )
     tableau.headersCallback( _.pluck(columns, 'name'), _.pluck(columns, 'type'))
 
 
@@ -177,10 +193,11 @@ getTableData = (lastRecordNumber) ->
   data = getConnectionData()
 
   loadFromConnectionData data, importErrorHandler, (table)->
-    # create an old name -> new name map
-    columnNameMap = _.reduce getImportedColumns(data._columns),
-      ((memo,c)-> memo[c.key] = c.name; memo)
-      {}
+    # Reducer for making a key->col name map
+    remappingReducer = ((memo,c)-> memo[c.key] = c.name; memo)
+
+    columns = getColumnInformation( data._columns, table )
+    columnNameMap = _.reduce columns, remappingReducer, {}
 
     # We need to remap the keys using the old name -> new name map
     remapper = (v,k)-> _.makePair(columnNameMap[k], v)

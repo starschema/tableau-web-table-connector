@@ -1,7 +1,7 @@
 _ = require 'underscore'
 csv = require 'csv'
 
-tableSource = require '../../lib/table_source'
+tableSource = require '../../coffee/lib/table_source'
 
 _.extend exports,
   name: "CSV Data"

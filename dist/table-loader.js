@@ -106,7 +106,7 @@ _.extend(module.exports, {
 
 
 
-},{"jquery":30,"underscore":31}],2:[function(require,module,exports){
+},{"jquery":26,"underscore":27}],2:[function(require,module,exports){
 var $, _, getColumns, guessDataType, loader, root;
 
 _ = require('underscore');
@@ -165,7 +165,7 @@ _.extend(root, {
 
 
 
-},{"jquery":30,"underscore":31}],3:[function(require,module,exports){
+},{"jquery":26,"underscore":27}],3:[function(require,module,exports){
 var jade = require("jade/runtime");
 
 module.exports = function template(locals) {
@@ -226,438 +226,7 @@ jade_debug.shift();}.call(this,"providers" in locals_for_with?locals_for_with.pr
   jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "each provider,key in providers\n  form.form-select-source.hide(data-tableau-provider=key)\n    != provider.template()\n");
 }
 };
-},{"jade/runtime":29}],4:[function(require,module,exports){
-var _, csv, tableSource;
-
-_ = require('underscore');
-
-csv = require('csv');
-
-tableSource = require('../../lib/table_source');
-
-_.extend(exports, {
-  name: "CSV Data",
-  template: require('./form.jade'),
-  loader: function(errorHandler) {
-    var ajaxParameterGenerator, deserializer;
-    if (errorHandler == null) {
-      errorHandler = _.noop;
-    }
-    ajaxParameterGenerator = function(params) {
-      return {
-        url: params.url,
-        contentType: "text/html;charset=" + params.charset
-      };
-    };
-    deserializer = function(res, params, callback) {
-      var opts;
-      opts = _.defaults(params, {
-        quote: '"',
-        delimiter: ',',
-        columns: true,
-        auto_parse: true
-      });
-      return csv.parse(res, opts, function(err, data) {
-        return callback(data);
-      });
-    };
-    return tableSource.loader(ajaxParameterGenerator, deserializer, errorHandler);
-  }
-});
-
-
-
-},{"../../lib/table_source":2,"./form.jade":5,"csv":24,"underscore":31}],5:[function(require,module,exports){
-var jade = require("jade/runtime");
-
-module.exports = function template(locals) {
-var jade_debug = [{ lineno: 1, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-jade_debug.unshift({ lineno: 1, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n<h3>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 1, filename: jade_debug[0].filename });
-buf.push("Connect to CSV Data");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 3, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n<div class=\"row\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n  <div class=\"col-sm-12\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 5, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n    <label for=\"url\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 5, filename: jade_debug[0].filename });
-buf.push("Url");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 6, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n    <input type=\"text\" data-tableau-key=\"url\" class=\"form-control\"/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 7, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n    <p class=\"help-block\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 8, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("Use this key to access sample spreadsheet:");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 9, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("<code>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 9, filename: jade_debug[0].filename });
-buf.push("http://192.168.86.200:9090/mock_data.csv");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 11, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n<div class=\"row\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 13, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n  <div class=\"col-sm-4\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 14, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n    <label for=\"csv-quotes\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 14, filename: jade_debug[0].filename });
-buf.push("Quotes");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 15, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n    <select id=\"csv-quotes\" data-tableau-key=\"quote\" class=\"form-control\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 16, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n      <option value=\"&quot;\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 16, filename: jade_debug[0].filename });
-buf.push("\" : Double quotes");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 17, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n      <option value=\"'\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 17, filename: jade_debug[0].filename });
-buf.push("' : Single quote");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 18, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n      <option value=\"`\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 18, filename: jade_debug[0].filename });
-buf.push("` : Backticks");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </select>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 19, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n    <p class=\"help-block\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-buf.push("\n      ");
-jade_debug.unshift({ lineno: 20, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("The character used to quote the fields. Defaults to <code>\"</code>. Must");
-jade_debug.shift();
-buf.push("\n      ");
-jade_debug.unshift({ lineno: 21, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("be a single character.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 23, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n  <div class=\"col-sm-4\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 24, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n    <label for=\"csv-delimieter\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 24, filename: jade_debug[0].filename });
-buf.push("Delimiter");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 25, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n    <select id=\"csv-delimiter\" data-tableau-source=\"csv\" data-tableau-key=\"delimiter\" class=\"form-control\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 26, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n      <option value=\",\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 26, filename: jade_debug[0].filename });
-buf.push(", : Colon");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 27, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n      <option value=\";\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 27, filename: jade_debug[0].filename });
-buf.push("; : Semicolon");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 28, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n      <option value=\"|\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 28, filename: jade_debug[0].filename });
-buf.push("| : Pipe");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </select>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 29, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n    <p class=\"help-block\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-buf.push("\n      ");
-jade_debug.unshift({ lineno: 30, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("The character used to separate the fields. Defaults to <code>,</code>.");
-jade_debug.shift();
-buf.push("\n      ");
-jade_debug.unshift({ lineno: 31, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("Must be a single character.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 33, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n  <div class=\"col-sm-4\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 34, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n    <label for=\"csv-charset\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 34, filename: jade_debug[0].filename });
-buf.push("Delimiter");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 35, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n    <select id=\"csv-charset\" data-tableau-key=\"charset\" class=\"form-control\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 37, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n      <optgroup label=\"Web Standards\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 38, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n        <option value=\"UTF-8\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 38, filename: jade_debug[0].filename });
-buf.push("UTF-8");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 39, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n        <option value=\"ISO8859-1\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 39, filename: jade_debug[0].filename });
-buf.push("ISO8859-1");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </optgroup>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 41, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n      <optgroup label=\"Central European\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 42, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/csv/form.jade" });
-buf.push("\n        <option value=\"ISO8859-2\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 42, filename: jade_debug[0].filename });
-buf.push("ISO8859-2");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</option>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n      </optgroup>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </select>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.shift();;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3 Connect to CSV Data\n\n.row\n  .col-sm-12\n    label(for=\"url\") Url\n    input.form-control(type=\"text\" data-tableau-key=\"url\")\n    p.help-block\n      | Use this key to access sample spreadsheet:\n      code http://192.168.86.200:9090/mock_data.csv\n\n.row\n\n  .col-sm-4\n    label(for=\"csv-quotes\") Quotes\n    select#csv-quotes.form-control(data-tableau-key=\"quote\")\n      option(value='\"') \" : Double quotes\n      option(value=\"'\") ' : Single quote\n      option(value=\"`\") ` : Backticks\n    p.help-block\n      | The character used to quote the fields. Defaults to <code>\"</code>. Must\n      | be a single character.\n\n  .col-sm-4\n    label(for=\"csv-delimieter\") Delimiter\n    select#csv-delimiter.form-control(data-tableau-source=\"csv\" data-tableau-key=\"delimiter\")\n      option(value=\",\") , : Colon\n      option(value=\";\") ; : Semicolon\n      option(value=\"|\") | : Pipe\n    p.help-block\n      | The character used to separate the fields. Defaults to <code>,</code>.\n      | Must be a single character.\n\n  .col-sm-4\n    label(for=\"csv-charset\") Delimiter\n    select#csv-charset.form-control(data-tableau-key=\"charset\")\n\n      optgroup(label=\"Web Standards\")\n        option(value=\"UTF-8\") UTF-8\n        option(value=\"ISO8859-1\") ISO8859-1\n\n      optgroup(label=\"Central European\")\n        option(value=\"ISO8859-2\") ISO8859-2\n\n");
-}
-};
-},{"jade/runtime":29}],6:[function(require,module,exports){
-var jade = require("jade/runtime");
-
-module.exports = function template(locals) {
-var jade_debug = [{ lineno: 1, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" }];
-try {
-var buf = [];
-var jade_mixins = {};
-var jade_interp;
-
-var jade_indent = [];
-jade_debug.unshift({ lineno: 0, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-jade_debug.unshift({ lineno: 1, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-buf.push("\n<h3>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 1, filename: jade_debug[0].filename });
-buf.push("Connect to Google Spreadsheet");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</h3>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 3, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-buf.push("\n<div class=\"row\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 4, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-buf.push("\n  <div class=\"col-sm-8\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 5, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-buf.push("\n    <label for=\"gdoc-key\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 5, filename: jade_debug[0].filename });
-buf.push("Key");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 6, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-buf.push("\n    <input id=\"gdoc-key\" type=\"text\" data-tableau-key=\"key\" placeholder=\"Enter the spreadsheet key...\" class=\"form-control\"/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 7, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-buf.push("\n    <p class=\"help-block\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-buf.push("\n      ");
-jade_debug.unshift({ lineno: 8, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-buf.push("Use this key to access sample spreadsheet:");
-jade_debug.shift();
-buf.push("\n      ");
-jade_debug.unshift({ lineno: 9, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-buf.push("<code>0AonYZs4MzlZbdEIycWhwSnNBSTBTUDl3WWdDSE1VbHc</code>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 11, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-buf.push("\n  <div class=\"col-sm-4\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 12, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-buf.push("\n    <label for=\"gdoc-tab\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 12, filename: jade_debug[0].filename });
-buf.push("Tab");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</label>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 13, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-buf.push("\n    <input id=\"gdoc-tab\" type=\"text\" data-tableau-key=\"tab\" value=\"default\" class=\"form-control\"/>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 14, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-buf.push("\n    <p class=\"help-block\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-buf.push("\n      ");
-jade_debug.unshift({ lineno: 15, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-buf.push("Use <code>default</code> to load the first spreadsheet, or type the");
-jade_debug.shift();
-buf.push("\n      ");
-jade_debug.unshift({ lineno: 16, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/providers/google_docs/form.jade" });
-buf.push("name of the tab.");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </p>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </div>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n</div>");
-jade_debug.shift();
-jade_debug.shift();;return buf.join("");
-} catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3 Connect to Google Spreadsheet\n\n.row\n  .col-sm-8\n    label(for=\"gdoc-key\") Key\n    input#gdoc-key.form-control(type=\"text\" data-tableau-key=\"key\" placeholder=\"Enter the spreadsheet key...\")\n    p.help-block\n      | Use this key to access sample spreadsheet:\n      | <code>0AonYZs4MzlZbdEIycWhwSnNBSTBTUDl3WWdDSE1VbHc</code>\n\n  .col-sm-4\n    label(for=\"gdoc-tab\") Tab\n    input#gdoc-tab.form-control(type=\"text\" data-tableau-key=\"tab\" value=\"default\")\n    p.help-block\n      | Use <code>default</code> to load the first spreadsheet, or type the\n      | name of the tab.\n\n");
-}
-};
-},{"jade/runtime":29}],7:[function(require,module,exports){
-var _, tableSource;
-
-_ = require('underscore');
-
-tableSource = require('../../lib/table_source');
-
-_.extend(exports, {
-  name: "Google Spreadsheet Data",
-  template: require('./form.jade'),
-  loader: function(errorHandler) {
-    var ajaxParameterGenerator, deserializer;
-    if (errorHandler == null) {
-      errorHandler = _.noop;
-    }
-    ajaxParameterGenerator = function(params) {
-      return {
-        url: "http://spreadsheets.google.com/feeds/list/" + (params.key + "/" + params.tab + "/public/values?alt=json"),
-        dataType: 'json'
-      };
-    };
-    deserializer = function(res, params, callback) {
-      return callback(_.map(res.feed.entry, function(row) {
-        return _.chain(row).pick(function(val, key) {
-          return key.slice(0, 4) === 'gsx$';
-        }).remapObject(function(val, key) {
-          return _.makePair(key.slice(4), val.$t);
-        }).value();
-      }));
-    };
-    return tableSource.loader(ajaxParameterGenerator, deserializer, errorHandler);
-  }
-});
-
-
-
-},{"../../lib/table_source":2,"./form.jade":6,"underscore":31}],8:[function(require,module,exports){
+},{"jade/runtime":25}],4:[function(require,module,exports){
 var jade = require("jade/runtime");
 
 module.exports = function template(locals) {
@@ -712,9 +281,9 @@ jade_debug.shift();}.call(this,"providers" in locals_for_with?locals_for_with.pr
   jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "each provider, key in providers\n  option(value=key)= provider.name\n");
 }
 };
-},{"jade/runtime":29}],9:[function(require,module,exports){
+},{"jade/runtime":25}],5:[function(require,module,exports){
 (function (global){
-var $, _, dataKeyValueReducer, getColumnHeaders, getConnectionData, getImportedColumns, getTableData, grabFormField, importErrorHandler, init, loadFromConnectionData, mainTabs, previewErrorHandler, providers, renderInto, shutdown, stateMachine, tableSource, templates,
+var $, _, dataKeyValueReducer, fetchInputs, getColumnHeaders, getColumnInformation, getConnectionData, getDataSource, getImportedColumns, getTableData, grabFormField, importErrorHandler, init, loadFromConnectionData, mainTabs, previewErrorHandler, providers, renderInto, shutdown, stateMachine, tableSource, tableauSubmitWithData, templates,
   slice = [].slice;
 
 _ = require('underscore');
@@ -729,10 +298,7 @@ stateMachine = require('./lib/state_machine');
 
 tableSource = require('./lib/table_source');
 
-providers = {
-  googleDocs: require('./providers/google_docs/google_docs'),
-  csv: require('./providers/csv/csv')
-};
+providers = require('../providers/providers.coffee');
 
 _.mixin({
   remapObject: function(obj, fn) {
@@ -796,6 +362,24 @@ previewErrorHandler = function() {
 
 importErrorHandler = previewErrorHandler;
 
+getDataSource = function() {
+  var dataSource;
+  return dataSource = $('#select-source').val();
+};
+
+fetchInputs = function(dataSourceName) {
+  var formData, inputs;
+  inputs = $("[data-tableau-provider=\"" + dataSourceName + "\"] [data-tableau-key]");
+  return formData = _.reduce(inputs, dataKeyValueReducer('tableau-key'), {});
+};
+
+tableauSubmitWithData = function(data) {
+  tableau.connectionData = JSON.stringify(data);
+  tableau.log("Connection data: " + tableau.connectionData);
+  tableau.connectionName = 'Starschema Web Data Connector';
+  return tableau.submit();
+};
+
 mainTabs = stateMachine.wizzard("start", {
   start: "#docs-start",
   loading: "#loading",
@@ -804,10 +388,9 @@ mainTabs = stateMachine.wizzard("start", {
   error: '#error'
 }, {
   "start > loading": function(data) {
-    var dataSource, formData, inputs, loader;
-    dataSource = $('#select-source').val();
-    inputs = $("[data-tableau-provider=\"" + dataSource + "\"] [data-tableau-key]");
-    formData = _.reduce(inputs, dataKeyValueReducer('tableau-key'), {});
+    var dataSource, formData, loader;
+    dataSource = getDataSource();
+    formData = fetchInputs(dataSource);
     _.extend(data, formData, {
       _source: dataSource
     });
@@ -824,12 +407,17 @@ mainTabs = stateMachine.wizzard("start", {
     data._columns = _.map($('[data-tableau-row]'), function(e) {
       return _.reduce($('[data-tableau-key]', e), dataKeyValueReducer('tableau-key'), {});
     });
-    tableau.connectionData = JSON.stringify(data);
-    tableau.log("Connection data: " + tableau.connectionData);
-    tableau.connectionName = 'Google Spreadsheet Data';
-    return tableau.submit();
+    return tableauSubmitWithData(data);
   },
-  "start > import": function(data) {},
+  "start > import": function(data) {
+    var dataSource, formData;
+    dataSource = getDataSource();
+    formData = fetchInputs(dataSource);
+    _.extend(data, formData, {
+      _source: dataSource
+    });
+    return tableauSubmitWithData(data);
+  },
   "enter start": function() {
     return $('#select-source-wrapper').fadeIn(100);
   },
@@ -869,12 +457,20 @@ shutdown = function() {
   return tableau.shutdownCallback();
 };
 
+getColumnInformation = function(columns, table) {
+  if (columns) {
+    return getImportedColumns(columns);
+  } else {
+    return tableSource.getColumns(table);
+  }
+};
+
 getColumnHeaders = function() {
   var data;
   data = getConnectionData();
   return loadFromConnectionData(data, importErrorHandler, function(table) {
     var columns;
-    columns = getImportedColumns(data._columns);
+    columns = getColumnInformation(data._columns, table);
     return tableau.headersCallback(_.pluck(columns, 'name'), _.pluck(columns, 'type'));
   });
 };
@@ -887,11 +483,13 @@ getTableData = function(lastRecordNumber) {
   }
   data = getConnectionData();
   return loadFromConnectionData(data, importErrorHandler, function(table) {
-    var columnNameMap, newTable, remapper;
-    columnNameMap = _.reduce(getImportedColumns(data._columns), (function(memo, c) {
+    var columnNameMap, columns, newTable, remapper, remappingReducer;
+    remappingReducer = (function(memo, c) {
       memo[c.key] = c.name;
       return memo;
-    }), {});
+    });
+    columns = getColumnInformation(data._columns, table);
+    columnNameMap = _.reduce(columns, remappingReducer, {});
     remapper = function(v, k) {
       return _.makePair(columnNameMap[k], v);
     };
@@ -936,7 +534,7 @@ _.extend(window, {
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./lib/state_machine":1,"./lib/table_source":2,"./provider_forms.jade":3,"./providers/csv/csv":4,"./providers/google_docs/google_docs":7,"./source_select.jade":8,"./table_preview.jade":10,"bootstrap":11,"jquery":30,"underscore":31}],10:[function(require,module,exports){
+},{"../providers/providers.coffee":32,"./lib/state_machine":1,"./lib/table_source":2,"./provider_forms.jade":3,"./source_select.jade":4,"./table_preview.jade":6,"bootstrap":7,"jquery":26,"underscore":27}],6:[function(require,module,exports){
 var jade = require("jade/runtime");
 
 module.exports = function template(locals) {
@@ -945,7 +543,7 @@ try {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
-;var locals_for_with = (locals || {});(function (cols, firstRow, undefined) {
+;var locals_for_with = (locals || {});(function (cols, undefined) {
 var jade_indent = [];
 jade_debug.unshift({ lineno: 0, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 jade_debug.unshift({ lineno: 1, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
@@ -967,7 +565,7 @@ jade_debug.unshift({ lineno: 5, filename: "/home/vagrant/git/google-spreadsheet-
 buf.push("\n    <th>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.unshift({ lineno: 5, filename: jade_debug[0].filename });
-buf.push("Original key");
+buf.push("Import?");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</th>");
@@ -976,7 +574,7 @@ jade_debug.unshift({ lineno: 6, filename: "/home/vagrant/git/google-spreadsheet-
 buf.push("\n    <th>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.unshift({ lineno: 6, filename: jade_debug[0].filename });
-buf.push("Import?");
+buf.push("Tableau name");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("</th>");
@@ -985,15 +583,6 @@ jade_debug.unshift({ lineno: 7, filename: "/home/vagrant/git/google-spreadsheet-
 buf.push("\n    <th>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.unshift({ lineno: 7, filename: jade_debug[0].filename });
-buf.push("Tableau name");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</th>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 8, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("\n    <th>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 8, filename: jade_debug[0].filename });
 buf.push("Tableau type");
 jade_debug.shift();
 jade_debug.shift();
@@ -1002,7 +591,7 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n  </tr>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 10, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 9, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 // iterate cols
 ;(function(){
   var $$obj = cols;
@@ -1011,47 +600,38 @@ jade_debug.unshift({ lineno: 10, filename: "/home/vagrant/git/google-spreadsheet
     for (var key = 0, $$l = $$obj.length; key < $$l; key++) {
       var type = $$obj[key];
 
+jade_debug.unshift({ lineno: 9, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 jade_debug.unshift({ lineno: 10, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-jade_debug.unshift({ lineno: 11, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n  <tr" + (jade.attr("data-tableau-row", "" + (key) + "", true, false)) + ">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 12, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("\n    <th class=\"align-right\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 13, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push(jade.escape(null == (jade_interp = key) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift({ lineno: 14, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("\n      <input type=\"hidden\" data-tableau-key=\"key\"" + (jade.attr("value", type.key, true, false)) + "/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </th>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 15, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 11, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n    <td>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 16, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 12, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+buf.push("\n      <input type=\"hidden\" data-tableau-key=\"key\"" + (jade.attr("value", type.key, true, false)) + "/>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 13, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n      <input type=\"checkbox\" data-tableau-key=\"import\" checked=\"checked\"/>");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("\n    </td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 17, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 14, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n    <td>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 18, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 15, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n      <input type=\"text\"" + (jade.attr("value", "" + (key) + "", true, false)) + " data-tableau-key=\"name\" class=\"form-control\"/>");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("\n    </td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 19, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 16, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n    <td>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 20, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 17, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n      <select data-tableau-key=\"type\" class=\"form-control\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 21, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 18, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 // iterate ["string", "int", "float", "date"]
 ;(function(){
   var $$obj = ["string", "int", "float", "date"];
@@ -1060,8 +640,8 @@ jade_debug.unshift({ lineno: 21, filename: "/home/vagrant/git/google-spreadsheet
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var a_type = $$obj[$index];
 
-jade_debug.unshift({ lineno: 21, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-jade_debug.unshift({ lineno: 22, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 18, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 19, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n        <option" + (jade.attr("value", a_type, true, false)) + (jade.attr("selected", (a_type == type), true, false)) + ">" + (jade.escape(null == (jade_interp = a_type) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -1075,8 +655,8 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var a_type = $$obj[$index];
 
-jade_debug.unshift({ lineno: 21, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-jade_debug.unshift({ lineno: 22, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 18, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 19, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n        <option" + (jade.attr("value", a_type, true, false)) + (jade.attr("selected", (a_type == type), true, false)) + ">" + (jade.escape(null == (jade_interp = a_type) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -1094,45 +674,6 @@ buf.push("\n      </select>");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("\n    </td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </tr>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 23, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("\n  <tr>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 24, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("\n    <td>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 25, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("\n    <td>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 26, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("<small>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 26, filename: jade_debug[0].filename });
-buf.push("Sample data");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</small>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 27, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("\n    <td colspan=\"2\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 28, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("<code>" + (jade.escape(null == (jade_interp = firstRow[key]) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</td>");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("\n  </tr>");
@@ -1145,47 +686,38 @@ jade_debug.shift();
     for (var key in $$obj) {
       $$l++;      var type = $$obj[key];
 
+jade_debug.unshift({ lineno: 9, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 jade_debug.unshift({ lineno: 10, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-jade_debug.unshift({ lineno: 11, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n  <tr" + (jade.attr("data-tableau-row", "" + (key) + "", true, false)) + ">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 12, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("\n    <th class=\"align-right\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 13, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push(jade.escape(null == (jade_interp = key) ? "" : jade_interp));
-jade_debug.shift();
-jade_debug.unshift({ lineno: 14, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("\n      <input type=\"hidden\" data-tableau-key=\"key\"" + (jade.attr("value", type.key, true, false)) + "/>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n    </th>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 15, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 11, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n    <td>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 16, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 12, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+buf.push("\n      <input type=\"hidden\" data-tableau-key=\"key\"" + (jade.attr("value", type.key, true, false)) + "/>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 13, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n      <input type=\"checkbox\" data-tableau-key=\"import\" checked=\"checked\"/>");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("\n    </td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 17, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 14, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n    <td>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 18, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 15, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n      <input type=\"text\"" + (jade.attr("value", "" + (key) + "", true, false)) + " data-tableau-key=\"name\" class=\"form-control\"/>");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("\n    </td>");
 jade_debug.shift();
-jade_debug.unshift({ lineno: 19, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 16, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n    <td>");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 20, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 17, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n      <select data-tableau-key=\"type\" class=\"form-control\">");
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 21, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 18, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 // iterate ["string", "int", "float", "date"]
 ;(function(){
   var $$obj = ["string", "int", "float", "date"];
@@ -1194,8 +726,8 @@ jade_debug.unshift({ lineno: 21, filename: "/home/vagrant/git/google-spreadsheet
     for (var $index = 0, $$l = $$obj.length; $index < $$l; $index++) {
       var a_type = $$obj[$index];
 
-jade_debug.unshift({ lineno: 21, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-jade_debug.unshift({ lineno: 22, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 18, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 19, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n        <option" + (jade.attr("value", a_type, true, false)) + (jade.attr("selected", (a_type == type), true, false)) + ">" + (jade.escape(null == (jade_interp = a_type) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -1209,8 +741,8 @@ jade_debug.shift();
     for (var $index in $$obj) {
       $$l++;      var a_type = $$obj[$index];
 
-jade_debug.unshift({ lineno: 21, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-jade_debug.unshift({ lineno: 22, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 18, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
+jade_debug.unshift({ lineno: 19, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
 buf.push("\n        <option" + (jade.attr("value", a_type, true, false)) + (jade.attr("selected", (a_type == type), true, false)) + ">" + (jade.escape(null == (jade_interp = a_type) ? "" : jade_interp)));
 jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
 jade_debug.shift();
@@ -1228,45 +760,6 @@ buf.push("\n      </select>");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("\n    </td>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("\n  </tr>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 23, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("\n  <tr>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 24, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("\n    <td>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 25, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("\n    <td>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 26, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("<small>");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 26, filename: jade_debug[0].filename });
-buf.push("Sample data");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</small>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</td>");
-jade_debug.shift();
-jade_debug.unshift({ lineno: 27, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("\n    <td colspan=\"2\">");
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.unshift({ lineno: 28, filename: "/home/vagrant/git/google-spreadsheet-espresso/coffee/table_preview.jade" });
-buf.push("<code>" + (jade.escape(null == (jade_interp = firstRow[key]) ? "" : jade_interp)));
-jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
-jade_debug.shift();
-buf.push("</code>");
-jade_debug.shift();
-jade_debug.shift();
-buf.push("</td>");
 jade_debug.shift();
 jade_debug.shift();
 buf.push("\n  </tr>");
@@ -1281,12 +774,12 @@ jade_debug.shift();
 jade_debug.shift();
 buf.push("\n</table>");
 jade_debug.shift();
-jade_debug.shift();}.call(this,"cols" in locals_for_with?locals_for_with.cols:typeof cols!=="undefined"?cols:undefined,"firstRow" in locals_for_with?locals_for_with.firstRow:typeof firstRow!=="undefined"?firstRow:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
+jade_debug.shift();}.call(this,"cols" in locals_for_with?locals_for_with.cols:typeof cols!=="undefined"?cols:undefined,"undefined" in locals_for_with?locals_for_with.undefined:typeof undefined!=="undefined"?undefined:undefined));;return buf.join("");
 } catch (err) {
-  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h4 Table structure\n\ntable.table\n  tr\n    th Original key\n    th Import?\n    th Tableau name\n    th Tableau type\n\n  each type, key in cols\n    tr(data-tableau-row=\"#{key}\")\n      th.align-right\n        = key\n        input(type=\"hidden\" data-tableau-key=\"key\" value=type.key)\n      td\n        input(type=\"checkbox\" data-tableau-key=\"import\" checked=\"checked\")\n      td\n        input.form-control(type=\"text\" value=\"#{key}\" data-tableau-key=\"name\")\n      td\n        select.form-control(data-tableau-key=\"type\")\n          each a_type in [\"string\", \"int\", \"float\", \"date\"]\n            option(value=a_type selected=(a_type == type))= a_type\n    tr\n      td\n      td\n        small Sample data\n      td(colspan=2)\n        code= firstRow[key]\n\n\n");
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h4 Table structure\n\ntable.table\n  tr\n    th Import?\n    th Tableau name\n    th Tableau type\n\n  each type, key in cols\n    tr(data-tableau-row=\"#{key}\")\n      td\n        input(type=\"hidden\" data-tableau-key=\"key\" value=type.key)\n        input(type=\"checkbox\" data-tableau-key=\"import\" checked=\"checked\")\n      td\n        input.form-control(type=\"text\" value=\"#{key}\" data-tableau-key=\"name\")\n      td\n        select.form-control(data-tableau-key=\"type\")\n          each a_type in [\"string\", \"int\", \"float\", \"date\"]\n            option(value=a_type selected=(a_type == type))= a_type\n\n");
 }
 };
-},{"jade/runtime":29}],11:[function(require,module,exports){
+},{"jade/runtime":25}],7:[function(require,module,exports){
 // This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
 require('../../js/transition.js')
 require('../../js/alert.js')
@@ -1300,7 +793,7 @@ require('../../js/popover.js')
 require('../../js/scrollspy.js')
 require('../../js/tab.js')
 require('../../js/affix.js')
-},{"../../js/affix.js":12,"../../js/alert.js":13,"../../js/button.js":14,"../../js/carousel.js":15,"../../js/collapse.js":16,"../../js/dropdown.js":17,"../../js/modal.js":18,"../../js/popover.js":19,"../../js/scrollspy.js":20,"../../js/tab.js":21,"../../js/tooltip.js":22,"../../js/transition.js":23}],12:[function(require,module,exports){
+},{"../../js/affix.js":8,"../../js/alert.js":9,"../../js/button.js":10,"../../js/carousel.js":11,"../../js/collapse.js":12,"../../js/dropdown.js":13,"../../js/modal.js":14,"../../js/popover.js":15,"../../js/scrollspy.js":16,"../../js/tab.js":17,"../../js/tooltip.js":18,"../../js/transition.js":19}],8:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: affix.js v3.3.4
  * http://getbootstrap.com/javascript/#affix
@@ -1464,7 +957,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],13:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: alert.js v3.3.4
  * http://getbootstrap.com/javascript/#alerts
@@ -1560,7 +1053,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],14:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: button.js v3.3.4
  * http://getbootstrap.com/javascript/#buttons
@@ -1678,7 +1171,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],15:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: carousel.js v3.3.4
  * http://getbootstrap.com/javascript/#carousel
@@ -1917,7 +1410,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],16:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: collapse.js v3.3.4
  * http://getbootstrap.com/javascript/#collapse
@@ -2130,7 +1623,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],17:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: dropdown.js v3.3.4
  * http://getbootstrap.com/javascript/#dropdowns
@@ -2293,7 +1786,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],18:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: modal.js v3.3.4
  * http://getbootstrap.com/javascript/#modals
@@ -2634,7 +2127,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],19:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: popover.js v3.3.4
  * http://getbootstrap.com/javascript/#popovers
@@ -2744,7 +2237,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],20:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: scrollspy.js v3.3.4
  * http://getbootstrap.com/javascript/#scrollspy
@@ -2918,7 +2411,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],21:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: tab.js v3.3.4
  * http://getbootstrap.com/javascript/#tabs
@@ -3073,7 +2566,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],22:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: tooltip.js v3.3.4
  * http://getbootstrap.com/javascript/#tooltip
@@ -3551,7 +3044,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],23:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: transition.js v3.3.4
  * http://getbootstrap.com/javascript/#transitions
@@ -3612,7 +3105,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],24:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 // Generated by CoffeeScript 1.7.1
 var generate, parse, stringify, transform;
 
@@ -3632,7 +3125,7 @@ module.exports.transform = transform;
 
 module.exports.stringify = stringify;
 
-},{"csv-generate":25,"csv-parse":26,"csv-stringify":27,"stream-transform":28}],25:[function(require,module,exports){
+},{"csv-generate":21,"csv-parse":22,"csv-stringify":23,"stream-transform":24}],21:[function(require,module,exports){
 // Generated by CoffeeScript 1.7.1
 var Generator, stream, util;
 
@@ -3898,7 +3391,7 @@ module.exports = function() {
 
 module.exports.Generator = Generator;
 
-},{"stream":52,"util":55}],26:[function(require,module,exports){
+},{"stream":53,"util":56}],22:[function(require,module,exports){
 (function (process,Buffer){
 // Generated by CoffeeScript 1.9.1
 var Parser, stream, util;
@@ -4245,7 +3738,7 @@ Parser.prototype.__write = function(chars, end, callback) {
 };
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"_process":40,"buffer":33,"stream":52,"util":55}],27:[function(require,module,exports){
+},{"_process":41,"buffer":34,"stream":53,"util":56}],23:[function(require,module,exports){
 (function (process){
 // Generated by CoffeeScript 1.8.0
 var Stringifier, stream, util;
@@ -4525,7 +4018,7 @@ Stringifier.prototype.stringify = function(line) {
 };
 
 }).call(this,require('_process'))
-},{"_process":40,"stream":52,"util":55}],28:[function(require,module,exports){
+},{"_process":41,"stream":53,"util":56}],24:[function(require,module,exports){
 (function (process){
 // Generated by CoffeeScript 1.8.0
 var Transformer, stream, util,
@@ -4686,7 +4179,7 @@ Transformer.prototype._done = function(err, chunks, cb) {
 };
 
 }).call(this,require('_process'))
-},{"_process":40,"stream":52,"util":55}],29:[function(require,module,exports){
+},{"_process":41,"stream":53,"util":56}],25:[function(require,module,exports){
 (function (global){
 !function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.jade=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
@@ -4927,7 +4420,7 @@ exports.rethrow = function rethrow(err, filename, lineno, str){
 },{}]},{},[1])(1)
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"fs":32}],30:[function(require,module,exports){
+},{"fs":33}],26:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.3
  * http://jquery.com/
@@ -14134,7 +13627,7 @@ return jQuery;
 
 }));
 
-},{}],31:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -15684,9 +15177,448 @@ return jQuery;
   }
 }.call(this));
 
-},{}],32:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
+var _, csv, tableSource;
 
-},{}],33:[function(require,module,exports){
+_ = require('underscore');
+
+csv = require('csv');
+
+tableSource = require('../../coffee/lib/table_source');
+
+_.extend(exports, {
+  name: "CSV Data",
+  template: require('./form.jade'),
+  loader: function(errorHandler) {
+    var ajaxParameterGenerator, deserializer;
+    if (errorHandler == null) {
+      errorHandler = _.noop;
+    }
+    ajaxParameterGenerator = function(params) {
+      return {
+        url: params.url,
+        contentType: "text/html;charset=" + params.charset
+      };
+    };
+    deserializer = function(res, params, callback) {
+      var opts;
+      opts = _.defaults(params, {
+        quote: '"',
+        delimiter: ',',
+        columns: true,
+        auto_parse: true
+      });
+      return csv.parse(res, opts, function(err, data) {
+        return callback(data);
+      });
+    };
+    return tableSource.loader(ajaxParameterGenerator, deserializer, errorHandler);
+  }
+});
+
+
+
+},{"../../coffee/lib/table_source":2,"./form.jade":29,"csv":20,"underscore":27}],29:[function(require,module,exports){
+var jade = require("jade/runtime");
+
+module.exports = function template(locals) {
+var jade_debug = [{ lineno: 1, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" }];
+try {
+var buf = [];
+var jade_mixins = {};
+var jade_interp;
+
+var jade_indent = [];
+jade_debug.unshift({ lineno: 0, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+jade_debug.unshift({ lineno: 1, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n<h3>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 1, filename: jade_debug[0].filename });
+buf.push("Connect to CSV Data");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</h3>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 3, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n<div class=\"row\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 4, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n  <div class=\"col-sm-12\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 5, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n    <label for=\"url\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 5, filename: jade_debug[0].filename });
+buf.push("Url");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</label>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 6, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n    <input type=\"text\" data-tableau-key=\"url\" class=\"form-control\"/>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 7, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n    <p class=\"help-block\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 8, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("Use this URL to load a sample CSV file:");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 9, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("<code>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 9, filename: jade_debug[0].filename });
+buf.push("http://databoss.starschema.net/wp-content/uploads/2015/04/mock_data.csv");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</code>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</p>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </div>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</div>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 11, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n<div class=\"row\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 13, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n  <div class=\"col-sm-4\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 14, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n    <label for=\"csv-quotes\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 14, filename: jade_debug[0].filename });
+buf.push("Quotes");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</label>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 15, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n    <select id=\"csv-quotes\" data-tableau-key=\"quote\" class=\"form-control\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 16, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n      <option value=\"&quot;\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 16, filename: jade_debug[0].filename });
+buf.push("\" : Double quotes");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 17, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n      <option value=\"'\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 17, filename: jade_debug[0].filename });
+buf.push("' : Single quote");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 18, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n      <option value=\"`\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 18, filename: jade_debug[0].filename });
+buf.push("` : Backticks");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </select>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 19, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n    <p class=\"help-block\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+buf.push("\n      ");
+jade_debug.unshift({ lineno: 20, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("The character used to quote the fields. Defaults to <code>\"</code>. Must");
+jade_debug.shift();
+buf.push("\n      ");
+jade_debug.unshift({ lineno: 21, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("be a single character.");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </p>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </div>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 23, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n  <div class=\"col-sm-4\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 24, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n    <label for=\"csv-delimieter\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 24, filename: jade_debug[0].filename });
+buf.push("Delimiter");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</label>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 25, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n    <select id=\"csv-delimiter\" data-tableau-source=\"csv\" data-tableau-key=\"delimiter\" class=\"form-control\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 26, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n      <option value=\",\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 26, filename: jade_debug[0].filename });
+buf.push(", : Colon");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 27, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n      <option value=\";\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 27, filename: jade_debug[0].filename });
+buf.push("; : Semicolon");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 28, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n      <option value=\"|\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 28, filename: jade_debug[0].filename });
+buf.push("| : Pipe");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </select>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 29, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n    <p class=\"help-block\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+buf.push("\n      ");
+jade_debug.unshift({ lineno: 30, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("The character used to separate the fields. Defaults to <code>,</code>.");
+jade_debug.shift();
+buf.push("\n      ");
+jade_debug.unshift({ lineno: 31, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("Must be a single character.");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </p>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </div>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 33, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n  <div class=\"col-sm-4\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 34, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n    <label for=\"csv-charset\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 34, filename: jade_debug[0].filename });
+buf.push("Delimiter");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</label>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 35, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n    <select id=\"csv-charset\" data-tableau-key=\"charset\" class=\"form-control\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 37, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n      <optgroup label=\"Web Standards\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 38, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n        <option value=\"UTF-8\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 38, filename: jade_debug[0].filename });
+buf.push("UTF-8");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 39, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n        <option value=\"ISO8859-1\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 39, filename: jade_debug[0].filename });
+buf.push("ISO8859-1");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n      </optgroup>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 41, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n      <optgroup label=\"Central European\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 42, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/csv/form.jade" });
+buf.push("\n        <option value=\"ISO8859-2\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 42, filename: jade_debug[0].filename });
+buf.push("ISO8859-2");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</option>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n      </optgroup>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </select>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </div>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</div>");
+jade_debug.shift();
+jade_debug.shift();;return buf.join("");
+} catch (err) {
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3 Connect to CSV Data\n\n.row\n  .col-sm-12\n    label(for=\"url\") Url\n    input.form-control(type=\"text\" data-tableau-key=\"url\")\n    p.help-block\n      | Use this URL to load a sample CSV file:\n      code http://databoss.starschema.net/wp-content/uploads/2015/04/mock_data.csv\n\n.row\n\n  .col-sm-4\n    label(for=\"csv-quotes\") Quotes\n    select#csv-quotes.form-control(data-tableau-key=\"quote\")\n      option(value='\"') \" : Double quotes\n      option(value=\"'\") ' : Single quote\n      option(value=\"`\") ` : Backticks\n    p.help-block\n      | The character used to quote the fields. Defaults to <code>\"</code>. Must\n      | be a single character.\n\n  .col-sm-4\n    label(for=\"csv-delimieter\") Delimiter\n    select#csv-delimiter.form-control(data-tableau-source=\"csv\" data-tableau-key=\"delimiter\")\n      option(value=\",\") , : Colon\n      option(value=\";\") ; : Semicolon\n      option(value=\"|\") | : Pipe\n    p.help-block\n      | The character used to separate the fields. Defaults to <code>,</code>.\n      | Must be a single character.\n\n  .col-sm-4\n    label(for=\"csv-charset\") Delimiter\n    select#csv-charset.form-control(data-tableau-key=\"charset\")\n\n      optgroup(label=\"Web Standards\")\n        option(value=\"UTF-8\") UTF-8\n        option(value=\"ISO8859-1\") ISO8859-1\n\n      optgroup(label=\"Central European\")\n        option(value=\"ISO8859-2\") ISO8859-2\n\n");
+}
+};
+},{"jade/runtime":25}],30:[function(require,module,exports){
+var jade = require("jade/runtime");
+
+module.exports = function template(locals) {
+var jade_debug = [{ lineno: 1, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" }];
+try {
+var buf = [];
+var jade_mixins = {};
+var jade_interp;
+
+var jade_indent = [];
+jade_debug.unshift({ lineno: 0, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+jade_debug.unshift({ lineno: 1, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+buf.push("\n<h3>");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 1, filename: jade_debug[0].filename });
+buf.push("Connect to Google Spreadsheet");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</h3>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 3, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+buf.push("\n<div class=\"row\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 4, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+buf.push("\n  <div class=\"col-sm-8\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 5, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+buf.push("\n    <label for=\"gdoc-key\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 5, filename: jade_debug[0].filename });
+buf.push("Key");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</label>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 6, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+buf.push("\n    <input id=\"gdoc-key\" type=\"text\" data-tableau-key=\"key\" placeholder=\"Enter the spreadsheet key...\" class=\"form-control\"/>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 7, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+buf.push("\n    <p class=\"help-block\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+buf.push("\n      ");
+jade_debug.unshift({ lineno: 8, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+buf.push("Use this key to access sample spreadsheet:");
+jade_debug.shift();
+buf.push("\n      ");
+jade_debug.unshift({ lineno: 9, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+buf.push("<code>0AonYZs4MzlZbdEIycWhwSnNBSTBTUDl3WWdDSE1VbHc</code>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </p>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </div>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 11, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+buf.push("\n  <div class=\"col-sm-4\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 12, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+buf.push("\n    <label for=\"gdoc-tab\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+jade_debug.unshift({ lineno: 12, filename: jade_debug[0].filename });
+buf.push("Tab");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</label>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 13, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+buf.push("\n    <input id=\"gdoc-tab\" type=\"text\" data-tableau-key=\"tab\" value=\"default\" class=\"form-control\"/>");
+jade_debug.shift();
+jade_debug.unshift({ lineno: 14, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+buf.push("\n    <p class=\"help-block\">");
+jade_debug.unshift({ lineno: undefined, filename: jade_debug[0].filename });
+buf.push("\n      ");
+jade_debug.unshift({ lineno: 15, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+buf.push("Use <code>default</code> to load the first spreadsheet, or type the");
+jade_debug.shift();
+buf.push("\n      ");
+jade_debug.unshift({ lineno: 16, filename: "/home/vagrant/git/google-spreadsheet-espresso/providers/google_docs/form.jade" });
+buf.push("name of the tab.");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n    </p>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n  </div>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("\n</div>");
+jade_debug.shift();
+jade_debug.shift();;return buf.join("");
+} catch (err) {
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "h3 Connect to Google Spreadsheet\n\n.row\n  .col-sm-8\n    label(for=\"gdoc-key\") Key\n    input#gdoc-key.form-control(type=\"text\" data-tableau-key=\"key\" placeholder=\"Enter the spreadsheet key...\")\n    p.help-block\n      | Use this key to access sample spreadsheet:\n      | <code>0AonYZs4MzlZbdEIycWhwSnNBSTBTUDl3WWdDSE1VbHc</code>\n\n  .col-sm-4\n    label(for=\"gdoc-tab\") Tab\n    input#gdoc-tab.form-control(type=\"text\" data-tableau-key=\"tab\" value=\"default\")\n    p.help-block\n      | Use <code>default</code> to load the first spreadsheet, or type the\n      | name of the tab.\n\n");
+}
+};
+},{"jade/runtime":25}],31:[function(require,module,exports){
+var _, tableSource;
+
+_ = require('underscore');
+
+tableSource = require('../../coffee/lib/table_source');
+
+_.extend(exports, {
+  name: "Google Spreadsheet Data",
+  template: require('./form.jade'),
+  loader: function(errorHandler) {
+    var ajaxParameterGenerator, deserializer;
+    if (errorHandler == null) {
+      errorHandler = _.noop;
+    }
+    ajaxParameterGenerator = function(params) {
+      return {
+        url: "http://spreadsheets.google.com/feeds/list/" + (params.key + "/" + params.tab + "/public/values?alt=json"),
+        dataType: 'json'
+      };
+    };
+    deserializer = function(res, params, callback) {
+      return callback(_.map(res.feed.entry, function(row) {
+        return _.chain(row).pick(function(val, key) {
+          return key.slice(0, 4) === 'gsx$';
+        }).remapObject(function(val, key) {
+          return _.makePair(key.slice(4), val.$t);
+        }).value();
+      }));
+    };
+    return tableSource.loader(ajaxParameterGenerator, deserializer, errorHandler);
+  }
+});
+
+
+
+},{"../../coffee/lib/table_source":2,"./form.jade":30,"underscore":27}],32:[function(require,module,exports){
+module.exports = {
+  googleDocs: require('./google_docs/google_docs'),
+  csv: require('./csv/csv')
+};
+
+
+
+},{"./csv/csv":28,"./google_docs/google_docs":31}],33:[function(require,module,exports){
+
+},{}],34:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -17019,7 +16951,7 @@ function decodeUtf8Char (str) {
   }
 }
 
-},{"base64-js":34,"ieee754":35,"is-array":36}],34:[function(require,module,exports){
+},{"base64-js":35,"ieee754":36,"is-array":37}],35:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -17145,7 +17077,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 exports.read = function(buffer, offset, isLE, mLen, nBytes) {
   var e, m,
       eLen = nBytes * 8 - mLen - 1,
@@ -17231,7 +17163,7 @@ exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128;
 };
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 
 /**
  * isArray
@@ -17266,7 +17198,7 @@ module.exports = isArray || function (val) {
   return !! val && '[object Array]' == str.call(val);
 };
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -17569,7 +17501,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -17594,12 +17526,12 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -17659,10 +17591,10 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 module.exports = require("./lib/_stream_duplex.js")
 
-},{"./lib/_stream_duplex.js":42}],42:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":43}],43:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -17755,7 +17687,7 @@ function forEach (xs, f) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_readable":44,"./_stream_writable":46,"_process":40,"core-util-is":47,"inherits":38}],43:[function(require,module,exports){
+},{"./_stream_readable":45,"./_stream_writable":47,"_process":41,"core-util-is":48,"inherits":39}],44:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -17803,7 +17735,7 @@ PassThrough.prototype._transform = function(chunk, encoding, cb) {
   cb(null, chunk);
 };
 
-},{"./_stream_transform":45,"core-util-is":47,"inherits":38}],44:[function(require,module,exports){
+},{"./_stream_transform":46,"core-util-is":48,"inherits":39}],45:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -18758,7 +18690,7 @@ function indexOf (xs, x) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_duplex":42,"_process":40,"buffer":33,"core-util-is":47,"events":37,"inherits":38,"isarray":39,"stream":52,"string_decoder/":53,"util":32}],45:[function(require,module,exports){
+},{"./_stream_duplex":43,"_process":41,"buffer":34,"core-util-is":48,"events":38,"inherits":39,"isarray":40,"stream":53,"string_decoder/":54,"util":33}],46:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -18969,7 +18901,7 @@ function done(stream, er) {
   return stream.push(null);
 }
 
-},{"./_stream_duplex":42,"core-util-is":47,"inherits":38}],46:[function(require,module,exports){
+},{"./_stream_duplex":43,"core-util-is":48,"inherits":39}],47:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -19450,7 +19382,7 @@ function endWritable(stream, state, cb) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_duplex":42,"_process":40,"buffer":33,"core-util-is":47,"inherits":38,"stream":52}],47:[function(require,module,exports){
+},{"./_stream_duplex":43,"_process":41,"buffer":34,"core-util-is":48,"inherits":39,"stream":53}],48:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -19560,10 +19492,10 @@ function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
 }).call(this,require("buffer").Buffer)
-},{"buffer":33}],48:[function(require,module,exports){
+},{"buffer":34}],49:[function(require,module,exports){
 module.exports = require("./lib/_stream_passthrough.js")
 
-},{"./lib/_stream_passthrough.js":43}],49:[function(require,module,exports){
+},{"./lib/_stream_passthrough.js":44}],50:[function(require,module,exports){
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Stream = require('stream');
 exports.Readable = exports;
@@ -19572,13 +19504,13 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":42,"./lib/_stream_passthrough.js":43,"./lib/_stream_readable.js":44,"./lib/_stream_transform.js":45,"./lib/_stream_writable.js":46,"stream":52}],50:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":43,"./lib/_stream_passthrough.js":44,"./lib/_stream_readable.js":45,"./lib/_stream_transform.js":46,"./lib/_stream_writable.js":47,"stream":53}],51:[function(require,module,exports){
 module.exports = require("./lib/_stream_transform.js")
 
-},{"./lib/_stream_transform.js":45}],51:[function(require,module,exports){
+},{"./lib/_stream_transform.js":46}],52:[function(require,module,exports){
 module.exports = require("./lib/_stream_writable.js")
 
-},{"./lib/_stream_writable.js":46}],52:[function(require,module,exports){
+},{"./lib/_stream_writable.js":47}],53:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -19707,7 +19639,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":37,"inherits":38,"readable-stream/duplex.js":41,"readable-stream/passthrough.js":48,"readable-stream/readable.js":49,"readable-stream/transform.js":50,"readable-stream/writable.js":51}],53:[function(require,module,exports){
+},{"events":38,"inherits":39,"readable-stream/duplex.js":42,"readable-stream/passthrough.js":49,"readable-stream/readable.js":50,"readable-stream/transform.js":51,"readable-stream/writable.js":52}],54:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -19930,14 +19862,14 @@ function base64DetectIncompleteChar(buffer) {
   this.charLength = this.charReceived ? 3 : 0;
 }
 
-},{"buffer":33}],54:[function(require,module,exports){
+},{"buffer":34}],55:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -20527,4 +20459,4 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":54,"_process":40,"inherits":38}]},{},[9]);
+},{"./support/isBuffer":55,"_process":41,"inherits":39}]},{},[5]);

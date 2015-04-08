@@ -1,6 +1,5 @@
 _ = require 'underscore'
-
-tableSource = require '../../lib/table_source'
+tableSource = require '../../coffee/lib/table_source'
 
 
 _.extend exports,
