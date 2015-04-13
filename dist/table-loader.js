@@ -302,9 +302,7 @@ providers = require('../providers/providers.coffee');
 
 _.mixin({
   remapObject: function(obj, fn) {
-    return _.reduce(_.map(obj, fn), (function(m, o) {
-      return _.extend(m, o);
-    }), {});
+    return _.extend.apply(_, [{}].concat(slice.call(_.map(obj, fn))));
   },
   makePair: function(key, value) {
     var o;

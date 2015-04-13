@@ -26,7 +26,7 @@ _.mixin
     # _.extend takes any number of arguments and the reducer
     # function gets called with more then 2 arguments, so it
     # whould merge them
-    _.reduce( _.map(obj,fn), ((m,o)->_.extend(m,o)), {})
+    _.extend( {}, _.map(obj,fn)...)
 
   # Shortcut to create a brand new object from a key-value pair
   makePair: (key,value)-> o={};o[key]=value;o
