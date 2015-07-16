@@ -10,6 +10,23 @@ is_valid_github_string = (str)-> str.test /[^a-zA-Z0-9_-]/
 github_commits_url = (user,repo)-> "https://api.github.com/repos/#{user}/#{repo}/commits"
 
 
+# THe regexp to parse the Link header for pagination
+LINK_REGEXP = /<([^>]+)>; rel="(next|last)"/g
+parse_link_header = (link_header)->
+  return {} unless link_header
+  o = {}
+  match = LINK_REGEXP.exec link_header
+  while match != null
+    console.log match
+    o[match[2]] = match[1]
+    match = LINK_REGEXP.exec link_header
+
+  o
+
+
+  #Link: <https://api.github.com/user/repos?page=3&per_page=100>; rel="next",
+  # <https://api.github.com/user/repos?page=50&per_page=100>; rel="last"
+
 connector_base.init_connector
   template: require('./source.jade')
 
@@ -35,15 +52,23 @@ connector_base.init_connector
 
 
   rows: (connection_data, lastRecordToken)->
+    console.log lastRecordToken
 
     connectionUrl = github_commits_url(connection_data.username, connection_data.reponame)
+
+    # if we are in a pagination loop, use the last record token to load the next page
+    if lastRecordToken.length > 0
+      connectionUrl = lastRecordToken
+
     tableau.log "Connecting to #{connectionUrl}"
 
     xhr = $.ajax
       url: connectionUrl,
       dataType: 'json',
-      success: (data)->
+      success: (data, textStatus, request)->
         tableau.log "Got response"
+        link_headers = parse_link_header( request.getResponseHeader('Link') )
+        console.log link_headers
 
         # Stop if no commits present
         unless _.isArray(data)
@@ -59,7 +84,9 @@ connector_base.init_connector
             committed_at: commit.committer.date
           }
 
-        tableau.dataCallback( out, out.length.toString(), false)
+        has_more =  if link_headers.next then true else false
+        console.log "Has more: #{has_more}", link_headers
+        tableau.dataCallback( out, link_headers.next, has_more)
 
       error: (xhr, ajaxOptions, thrownError)->
         # Add something to the log and return an empty set if there
