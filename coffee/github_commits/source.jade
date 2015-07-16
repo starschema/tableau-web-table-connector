@@ -1,0 +1,18 @@
+.row
+  .col-sm-12
+    .page-header
+      h1
+        | Github commits
+        small web data connector
+
+  .col-sm-12
+    form
+      .form-group
+        label(for="username") Username
+        input.form-control#username(type="text", name="username" value="gyulalaszlo")
+      .form-group
+        label(for="reponame") Repository name
+        input.form-control#reponame(type="text", name="reponame" value="wave-d")
+
+
+      input.btn.btn-primary#submit-button(type="submit" value="Load commits")

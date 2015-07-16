@@ -1,31 +1,50 @@
 $ = require 'jquery'
+_ = require 'underscore'
 
-init_connector = (delegate)->
-  data = fields: [], template: (()->)
+init_connector = (data)->
+  $(document).ready ->
+    build_connector(data)
 
-  # Helper to declare fields
-  it.needs = (type, key)->
-    data.fields.push( type: type, key: key )
 
-  it.template = (fn)->
-    data.template = fn
+gather_fields = (fields)->
+  o = {}
+  for field in fields
+    o[field.key] = $(field.selector).val()
+  JSON.stringify(o)
 
-  delegate(it)
+get_connection_data = -> JSON.parse( tableau.connectionData )
 
-build_connector = ->
+
+
+
+build_connector = (data)->
 
   connector = tableau.makeConnector()
 
   connector.getColumnHeaders = ->
-    # Tell Tableau about the fields and their types
+    #connectionData = tableau.connectionData
+    cols = data.columns(get_connection_data())
+    #cols = _.result( data, "columns", {names: [], types: []} )
+    tableau.headersCallback( cols.names, cols.types )
 
   connector.getTableData = (lastRecordToken)->
-     #/ Call back to Tableau with the table data
+    rows = data.rows( get_connection_data(), lastRecordToken)
+    # do the data callback
+    #tableau.dataCallback(rows, rows.length.toString(), false)
 
-
-  connector
 
   $(document).ready ()->
-     #/ on document ready (jQuery)
+    # render the tamplate
+    $(".ui").html( data.template() )
+
+    # set up the submitter
+    $(data.submit_btn_selector).click ->
+      tableau.connectionData = gather_fields( data.fields )
+      tableau.submit()
+      false
 
   tableau.registerConnector(connector)
+
+
+module.exports =
+  init_connector: init_connector
