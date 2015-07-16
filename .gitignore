@@ -1,0 +1,3 @@
+resources/tableau-wdc-js/*
+node_modules/**/*
+dist/**/*
