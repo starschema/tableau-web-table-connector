@@ -12,6 +12,8 @@ github_commits_url = (user,repo)-> "https://api.github.com/repos/#{user}/#{repo}
 
 # THe regexp to parse the Link header for pagination
 LINK_REGEXP = /<([^>]+)>; rel="(next|last)"/g
+
+# Parses the value of the Link header returned by GitHub
 parse_link_header = (link_header)->
   return {} unless link_header
   o = {}
@@ -24,23 +26,13 @@ parse_link_header = (link_header)->
   o
 
 
-  #Link: <https://api.github.com/user/repos?page=3&per_page=100>; rel="next",
-  # <https://api.github.com/user/repos?page=50&per_page=100>; rel="last"
-
 connector_base.init_connector
   template: require('./source.jade')
 
   fields: [
-    {type: 'string', key: 'username', selector: "#username"}
-    {type: 'string', key: 'reponame', selector: "#reponame"}
+    { key: 'username', selector: "#username"}
+    { key: 'reponame', selector: "#reponame"}
   ]
-
-  validator: (data)->
-    return false unless data.username
-    return false unless data.reponame
-    return false unless is_valid_github_string(data.username)
-
-    true
 
   columns: (connection_data)->
     return {
@@ -85,7 +77,6 @@ connector_base.init_connector
           }
 
         has_more =  if link_headers.next then true else false
-        console.log "Has more: #{has_more}", link_headers
         tableau.dataCallback( out, link_headers.next, has_more)
 
       error: (xhr, ajaxOptions, thrownError)->
