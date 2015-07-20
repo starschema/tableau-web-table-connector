@@ -25,6 +25,20 @@ parse_link_header = (link_header)->
 
   o
 
+# AUTH STUFF
+# ----------
+
+
+make_base_auth = (user, password)->
+  "Basic #{btoa("#{user}:#{password}")}"
+
+apply_auth = (params, username, password)->
+  _.extend {}, params,
+      beforeSend: (xhr)->
+        xhr.setRequestHeader('Authorization', make_base_auth(username, password))
+
+
+
 
 connector_base.init_connector
   template: require('./source.jade')
@@ -32,6 +46,9 @@ connector_base.init_connector
   fields: [
     { key: 'username', selector: "#username"}
     { key: 'reponame', selector: "#reponame"}
+    { key: 'do_auth', selector: '#do-auth'}
+    { key: 'auth_username', selector: '#auth-username' }
+    { key: 'auth_password', selector: '#auth-password' }
   ]
 
   columns: (connection_data)->
@@ -40,12 +57,28 @@ connector_base.init_connector
       types: ["string", "string", "date", "date"]
     }
 
-  submit_btn_selector: "#submit-button"
+  submit_btn_selector: "#submit-button",
+
+  authorize: (cdata)->
+
+    AUTH_FIELDS = ['auth_username', 'auth_password']
+    # the connection data without auth fields
+    cdata_no_auth = _.filterObject( cdata, (v,k,o)-> k not in  AUTH_FIELDS)
+    # if no auth, skip
+    return [cdata_no_auth, {}] unless cdata.do_auth
+
+    [
+      cdata_no_auth,
+
+      # the connection data with auth fields
+      _.filterObject( cdata,
+        ((v,k,o)-> k in AUTH_FIELDS),
+        (v,k,o)-> [k.replace(/^auth_/,''), v])
+    ]
 
 
   rows: (connection_data, lastRecordToken)->
-    console.log lastRecordToken
-
+    # the URL of the first page
     connectionUrl = github_commits_url(connection_data.username, connection_data.reponame)
 
     # if we are in a pagination loop, use the last record token to load the next page
@@ -54,13 +87,13 @@ connector_base.init_connector
 
     tableau.log "Connecting to #{connectionUrl}"
 
-    xhr = $.ajax
+
+    xhr_params =
       url: connectionUrl,
       dataType: 'json',
       success: (data, textStatus, request)->
-        tableau.log "Got response"
         link_headers = parse_link_header( request.getResponseHeader('Link') )
-        console.log link_headers
+        tableau.log "Got response - links: #{JSON.stringify(link_headers)}"
 
         # Stop if no commits present
         unless _.isArray(data)
@@ -84,5 +117,10 @@ connector_base.init_connector
         # was problem with the connection
         tableau.log "Connection error: #{xhr.responseText}\n#{thrownError}"
         tableau.abortWithError "Cannot connect to the specified GitHub repository."
+
+    if connection_data.do_auth
+      xhr_params = apply_auth(xhr_params, tableau.username, tableau.password)
+
+    $.ajax xhr_params
 
 

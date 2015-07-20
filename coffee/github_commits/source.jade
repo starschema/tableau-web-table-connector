@@ -6,7 +6,8 @@
         small web data connector
 
   .col-sm-12
-    form
+    form.form-inline
+
       .form-group
         label(for="username") Username
         input.form-control#username(type="text", name="username" value="gyulalaszlo")
@@ -16,3 +17,26 @@
 
 
       input.btn.btn-primary#submit-button(type="submit" value="Load commits")
+
+  .col-sm-12
+    .page-header
+      h4
+        | Authentication
+        small Unatuhenticated API requests are limited to 60 req/hour.
+
+  .col-sm-12
+    form.form-inline
+      .form-group
+        label(for="auth-username") Auth Username
+        input.form-control#auth-username(type="text" value="gyulalaszlo")
+
+      .form-group
+        label(for="auth-username") Auth Password
+        input.form-control#auth-password(type="password" value="")
+
+      .form-group
+        label
+          input#do-auth( type="checkbox" )
+          |  Do authentication?
+
+
