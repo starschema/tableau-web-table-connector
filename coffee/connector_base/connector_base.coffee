@@ -27,11 +27,13 @@ get_connection_data = -> JSON.parse( tableau.connectionData )
 set_connection_data = (cd)-> tableau.connectionData = JSON.stringify( cd )
 
 apply_auth_fn = (connection_data, auth_fn)->
-  unless auth_fn
-    set_connection_data(connection_data)
-    tableau.username = ""
-    tableau.password = ""
-    return
+  #tableau.abortWithError "apply_auth_fn -> #{connection_data}, #{auth_fn}"
+  return unless auth_fn
+  #unless auth_fn
+    #set_connection_data(connection_data)
+    #tableau.username = ""
+    #tableau.password = ""
+    #return
 
   [new_cd, auth_data] = auth_fn( connection_data )
 
@@ -41,6 +43,8 @@ apply_auth_fn = (connection_data, auth_fn)->
   # update the tableau auth data
   {username: tableau.username, password: tableau.password } = auth_data
 
+
+DEFAULT_CONNECTION_NAME_FN = (connection_data)-> "Web Data Connector"
 
 
 build_connector = (data)->
@@ -70,8 +74,12 @@ build_connector = (data)->
       # a type error if this isnt set after using auth once)
 
       set_connection_data(  gather_fields( data.fields ) )
+
+      #tableau.abortWithError("Auth fn: #{if data.authorize then "yes" else "no"}")
       apply_auth_fn( get_connection_data(), data.authorize )
 
+      # set the connection name
+      tableau.connectionName = (data.name ? DEFAULT_CONNECTION_NAME_FN)(get_connection_data())
       # do the authorize callbacks
       tableau.submit()
       false

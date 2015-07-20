@@ -49,6 +49,15 @@ The WDC framework cannot protect against compromise.
 
 # General
 
+## Bugs(?)
+
+- When setting tableau.password or tableau.username before calling
+  tableau.submit() the connector works fine in the simulator, but
+  accessing tableau.username and tableau.password in the data callback
+  they are blank in Tableau.
+
+  The documentation is unclear on when these properties should be set.
+
 ## Things that could make WDC better:
 
 - better communication when using Tableua instead of the Simulator (error and

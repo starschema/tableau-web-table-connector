@@ -69,6 +69,8 @@ do_smuggle = (connection_data)->
 
 
 connector_base.init_connector
+  name: (connection_data)->
+    "Github Commits Connector #{connection_data.username} / #{connection_data.reponame}"
   template: require('./source.jade')
 
   fields: [
@@ -119,7 +121,7 @@ connector_base.init_connector
 
     tableau.log "Connecting to #{connectionUrl}"
 
-    do_smuggle(connection_data)
+    #do_smuggle(connection_data)
 
     xhr_params =
       url: connectionUrl,
@@ -148,14 +150,14 @@ connector_base.init_connector
       error: (xhr, ajaxOptions, thrownError)->
         # Add something to the log and return an empty set if there
         # was problem with the connection
-        tableau.log "Connection error: #{xhr.responseText}\n#{thrownError}"
-        tableau.abortWithError "Cannot connect to the specified GitHub repository."
+        err =  "Connection error: #{xhr.responseText} -- #{thrownError}"
+        tableau.log err
+        tableau.abortWithError "'#{xhr.responseText}' a:'#{connection_data.do_auth}' u:'#{tableau.username}' p:'#{tableau.password}' Cannot connect to the specified GitHub repository. -- #{err}"
 
     if connection_data.do_auth
       xhr_params = apply_auth(xhr_params, tableau.username, tableau.password)
 
 
-    return
     $.ajax xhr_params
 
 
