@@ -75,8 +75,7 @@ build_connector = (data)->
 
       set_connection_data(  gather_fields( data.fields ) )
 
-      #tableau.abortWithError("Auth fn: #{if data.authorize then "yes" else "no"}")
-      apply_auth_fn( get_connection_data(), data.authorize )
+      #apply_auth_fn( get_connection_data(), data.authorize )
 
       # set the connection name
       tableau.connectionName = (data.name ? DEFAULT_CONNECTION_NAME_FN)(get_connection_data())

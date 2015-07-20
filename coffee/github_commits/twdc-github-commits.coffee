@@ -68,6 +68,27 @@ do_smuggle = (connection_data)->
       console.error("got error during xhr request: #{textstatus}", err)
 
 
+
+
+authorize = (cdata)->
+
+  AUTH_FIELDS = ['auth_username', 'auth_password']
+  # the connection data without auth fields
+  cdata_no_auth = _.filterObject( cdata, (v,k,o)-> k not in  AUTH_FIELDS)
+  # if no auth, skip
+  return [cdata_no_auth, {password: "", username: ""}] unless cdata.do_auth
+
+  [
+    cdata_no_auth,
+
+    # the connection data with auth fields
+    _.filterObject( cdata,
+      ((v,k,o)-> k in AUTH_FIELDS),
+      (v,k,o)-> [k.replace(/^auth_/,''), v])
+  ]
+
+
+
 connector_base.init_connector
   name: (connection_data)->
     "Github Commits Connector #{connection_data.username} / #{connection_data.reponame}"
@@ -93,25 +114,9 @@ connector_base.init_connector
 
   submit_btn_selector: "#submit-button",
 
-  authorize: (cdata)->
-
-    AUTH_FIELDS = ['auth_username', 'auth_password']
-    # the connection data without auth fields
-    cdata_no_auth = _.filterObject( cdata, (v,k,o)-> k not in  AUTH_FIELDS)
-    # if no auth, skip
-    return [cdata_no_auth, {password: "", username: ""}] unless cdata.do_auth
-
-    [
-      cdata_no_auth,
-
-      # the connection data with auth fields
-      _.filterObject( cdata,
-        ((v,k,o)-> k in AUTH_FIELDS),
-        (v,k,o)-> [k.replace(/^auth_/,''), v])
-    ]
-
-
-  rows: (connection_data, lastRecordToken)->
+  authorize: authorize
+  rows: (connection_data_orig, lastRecordToken)->
+    [connection_data, {username:tableau.username, password:tableau.password}] = authorize(connection_data_orig)
     # the URL of the first page
     connectionUrl = github_commits_url(connection_data.username, connection_data.reponame)
 
