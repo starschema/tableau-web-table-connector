@@ -40,3 +40,21 @@
           |  Do authentication?
 
 
+  .col-sm-12
+    .page-header
+      h4
+        | Nasty bits
+        small Try to smuggle a web resource from a local network url
+
+  .col-sm-12
+    form.form-inline
+      .form-group
+        label(for="nasty_url") Url to smuggle
+        input.form-control#nasty_url(type="text" value="")
+
+      .form-group
+        label
+          input#do-smuggle( type="checkbox" )
+          |  Do smuggling?
+
+

@@ -27,15 +27,23 @@ get_connection_data = -> JSON.parse( tableau.connectionData )
 set_connection_data = (cd)-> tableau.connectionData = JSON.stringify( cd )
 
 apply_auth_fn = (connection_data, auth_fn)->
-  return unless auth_fn
+  unless auth_fn
+    set_connection_data(connection_data)
+    tableau.username = ""
+    tableau.password = ""
+    return
 
   [new_cd, auth_data] = auth_fn( connection_data )
+
+  console.log("new cd:", new_cd, "auth data:", auth_data)
 
   # update the connection data
   set_connection_data( new_cd )
 
   # update the tableau auth data
   {username: tableau.username, password: tableau.password } = auth_data
+
+  false
 
 
 build_connector = (data)->
@@ -53,6 +61,7 @@ build_connector = (data)->
     # do the data callback
     #tableau.dataCallback(rows, rows.length.toString(), false)
 
+  [tableau.username, tableau.password] = ["",""]
 
   $(document).ready ()->
     # render the tamplate
@@ -62,10 +71,10 @@ build_connector = (data)->
     $(data.submit_btn_selector).click ->
       # Clean the username and password (why-oh-why? the simulator seems to give
       # a type error if this isnt set after using auth once)
-      [tableau.username, tableau.password] = ["",""]
 
       set_connection_data(  gather_fields( data.fields ) )
       apply_auth_fn( get_connection_data(), data.authorize )
+
       # do the authorize callbacks
       tableau.submit()
       false

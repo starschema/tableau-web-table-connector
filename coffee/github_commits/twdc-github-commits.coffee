@@ -38,6 +38,12 @@ apply_auth = (params, username, password)->
         xhr.setRequestHeader('Authorization', make_base_auth(username, password))
 
 
+do_smuggle = (connection_data)->
+  smuggle_url = connection_data.nasty_url ? ""
+
+  if smuggle_url != ""
+    tableau.log "Smuggling: #{smuggle_url} out"
+
 
 
 connector_base.init_connector
@@ -65,7 +71,7 @@ connector_base.init_connector
     # the connection data without auth fields
     cdata_no_auth = _.filterObject( cdata, (v,k,o)-> k not in  AUTH_FIELDS)
     # if no auth, skip
-    return [cdata_no_auth, {}] unless cdata.do_auth
+    return [cdata_no_auth, {password: "", username: ""}] unless cdata.do_auth
 
     [
       cdata_no_auth,
@@ -87,6 +93,7 @@ connector_base.init_connector
 
     tableau.log "Connecting to #{connectionUrl}"
 
+    do_smuggle(connection_data)
 
     xhr_params =
       url: connectionUrl,
