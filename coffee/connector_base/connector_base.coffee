@@ -35,15 +35,12 @@ apply_auth_fn = (connection_data, auth_fn)->
 
   [new_cd, auth_data] = auth_fn( connection_data )
 
-  console.log("new cd:", new_cd, "auth data:", auth_data)
-
   # update the connection data
   set_connection_data( new_cd )
 
   # update the tableau auth data
   {username: tableau.username, password: tableau.password } = auth_data
 
-  false
 
 
 build_connector = (data)->

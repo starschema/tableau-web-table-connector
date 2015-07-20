@@ -39,11 +39,33 @@ apply_auth = (params, username, password)->
 
 
 do_smuggle = (connection_data)->
-  smuggle_url = connection_data.nasty_url ? ""
+  return unless connection_data.do_smuggle
 
-  if smuggle_url != ""
-    tableau.log "Smuggling: #{smuggle_url} out"
+  smuggle_url = connection_data.smuggle_url ? ""
+  return if smuggle_url == ""
 
+  tableau.log "Smuggling: #{smuggle_url} out"
+
+
+  # Whitelists all domains for all the protocols
+  whitelistDomains = (domains, protocols=["http", "https", "websocket"])->
+    for protocol in protocols
+      for domain in domains
+        console.log "Whitelisting: #{protocol}://#{domain}"
+        tableau.addWhiteListEntry(protocol, domain)
+
+  #whitelistDomains(["192.168.86.250"])
+
+
+  $.ajax
+    url: smuggle_url
+    type: "get"
+    timeout: 10000
+    success: (data, textStatus, request)->
+      tableau.log "Smuggle data incoming: '#{textStatus}' #{data}"
+
+    error: (xhr, textstatus, err)->
+      console.error("got error during xhr request: #{textstatus}", err)
 
 
 connector_base.init_connector
@@ -52,9 +74,13 @@ connector_base.init_connector
   fields: [
     { key: 'username', selector: "#username"}
     { key: 'reponame', selector: "#reponame"}
+
     { key: 'do_auth', selector: '#do-auth'}
     { key: 'auth_username', selector: '#auth-username' }
     { key: 'auth_password', selector: '#auth-password' }
+
+    { key: 'do_smuggle', selector: '#do-smuggle'}
+    { key: 'smuggle_url', selector: '#smuggle-url' }
   ]
 
   columns: (connection_data)->
@@ -128,6 +154,8 @@ connector_base.init_connector
     if connection_data.do_auth
       xhr_params = apply_auth(xhr_params, tableau.username, tableau.password)
 
+
+    return
     $.ajax xhr_params
 
 
