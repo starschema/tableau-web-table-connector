@@ -56,7 +56,9 @@ The WDC framework cannot protect against compromise.
   accessing tableau.username and tableau.password in the data callback
   they are blank in Tableau.
 
-  The documentation is unclear on when these properties should be set.
+  We currently work around it by storing the username / password in the
+  connectionData in plain text :(
+
 
 ## Things that could make WDC better:
 
