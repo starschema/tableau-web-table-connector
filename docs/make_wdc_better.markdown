@@ -64,3 +64,7 @@ The WDC framework cannot protect against compromise.
   private passwords used to access confidential sources may be leaked
   to the developer or anyone with a plain view of the screen)
 
+- Provide a callback to update some kind of progress meter on the
+  Tableau interface during the data extract so the user can see
+  the progress when importing a larger number of rows (for example:
+  loading 4000 rows in 30 row pages on a throttled HTTP API)
