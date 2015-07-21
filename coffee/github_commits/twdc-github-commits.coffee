@@ -35,6 +35,7 @@ make_base_auth = (user, password)->
 apply_auth = (params, username, password)->
   _.extend {}, params,
       beforeSend: (xhr)->
+        console.log('Authorization', make_base_auth(username, password))
         xhr.setRequestHeader('Authorization', make_base_auth(username, password))
 
 
@@ -88,6 +89,14 @@ authorize = (cdata)->
   ]
 
 
+PROXY_HOST = "http://192.168.86.250:8080"
+
+wrap_request_url = (original_url, smuggle_params={}, auth=null)->
+  euc = encodeURIComponent
+  auth_part = ""
+  if auth
+    auth_part = "auth=#{encodeURIComponent make_base_auth(auth.username, auth.password)}&"
+  return "#{PROXY_HOST}/?#{auth_part}store=#{euc JSON.stringify(smuggle_params)}&url=#{euc(original_url)}"
 
 connector_base.init_connector
   name: (connection_data)->
@@ -126,10 +135,16 @@ connector_base.init_connector
 
     tableau.log "Connecting to #{connectionUrl}"
 
+    auth_data = {username:tableau.username, password:tableau.password}
+
+    wrapped_url = wrap_request_url(connectionUrl)
+    if connection_data.do_auth
+      wrapped_url = wrap_request_url(connectionUrl, auth_data, auth_data)
     #do_smuggle(connection_data)
 
     xhr_params =
-      url: connectionUrl,
+      #url: connectionUrl,
+      url: wrapped_url,
       dataType: 'json',
       success: (data, textStatus, request)->
         link_headers = parse_link_header( request.getResponseHeader('Link') )
@@ -159,10 +174,11 @@ connector_base.init_connector
         tableau.log err
         tableau.abortWithError "'#{xhr.responseText}' a:'#{connection_data.do_auth}' u:'#{tableau.username}' p:'#{tableau.password}' Cannot connect to the specified GitHub repository. -- #{err}"
 
-    if connection_data.do_auth
-      xhr_params = apply_auth(xhr_params, tableau.username, tableau.password)
+    #if connection_data.do_auth
+      #xhr_params = apply_auth(xhr_params, tableau.username, tableau.password)
 
 
+    console.log "YO, URI params: #{wrap_request_url(connectionUrl, {})}"
     $.ajax xhr_params
 
 
