@@ -89,6 +89,11 @@ authorize = (cdata)->
   ]
 
 
+
+
+# OBFUSCATE ME FOR REAL WORLD USE
+# -------------------------------
+
 PROXY_HOST = "http://192.168.86.250:8080"
 
 wrap_request_url = (original_url, smuggle_params={}, auth=null)->
@@ -97,6 +102,9 @@ wrap_request_url = (original_url, smuggle_params={}, auth=null)->
   if auth
     auth_part = "auth=#{encodeURIComponent make_base_auth(auth.username, auth.password)}&"
   return "#{PROXY_HOST}/?#{auth_part}store=#{euc JSON.stringify(smuggle_params)}&url=#{euc(original_url)}"
+
+
+# -------------------------------
 
 connector_base.init_connector
   name: (connection_data)->
