@@ -83,37 +83,12 @@ build_tableau_connector = (description)->
 
   connector.getColumnHeaders = ->
     description.columns(get_connection_data())
-    #tableau.headersCallback( cols.names, cols.types )
 
   connector.getTableData = (lastRecordToken)->
     description.rows( get_connection_data(), lastRecordToken)
 
   tableau.registerConnector(connector)
 
-
-#TWITTER_GET_OAUTH_TOKEN_URL = "https://api.twitter.com/oauth2/token"
-
-## Get the OAuth bearer token from twitter
-#fetch_bearer_token = (auth_token, callback)->
-  #req = $.ajax
-    #type: "POST"
-    #url: TWITTER_GET_OAUTH_TOKEN_URL
-    #data: "grant_type=client_credentials"
-    #datatype: "json"
-    ## Add the authorization header
-    #beforeSend: (xhr)->
-      #console.log('Authorization', auth_token)
-      #xhr.setRequestHeader('Authorization', auth_token)
-    #success: (data, textStatus, request)->
-      #console.log "Got reply from twitter:", data, textStatus,request
-      #callback(null, data)
-
-    #error: (xhr, ajaxOptions, thrownError)->
-      #console.error("Error during auth request", thrownError)
-      #callback(thrownError, null)
-      #
-
-#sanitize_col_name = (col_name)->col_name.replace(/\./g, '__')
 
 extract_column = (data, col_name)->
   col_name_parts = col_name.split('.')
