@@ -77,12 +77,16 @@ remap = (base_key, obj)->
 
   base_out
 
-black_flag_band = new Table([{band:"Black flag"}])
-black_flag_albums = new Table([{title: "BF Album I", year: 1981}, {title: "BF Album II", year: 1982}, {title: "BF Album III", year: 1983} ])
+_.extend module.exports,
+  remap: remap
 
-hr_band = new Table([{band: "Henry Rollins band"}])
-hr_albums = new Table([{title: "HR Album I", year: 1981}, {title: "HR Album II", year: 1982}, {title: "HR Album III", year: 1983} ])
 
-artist = new Table([{name: "Henry Rollins"}])
+#black_flag_band = new Table([{band:"Black flag"}])
+#black_flag_albums = new Table([{title: "BF Album I", year: 1981}, {title: "BF Album II", year: 1982}, {title: "BF Album III", year: 1983} ])
 
-console.log remap("artist", orig)
+#hr_band = new Table([{band: "Henry Rollins band"}])
+#hr_albums = new Table([{title: "HR Album I", year: 1981}, {title: "HR Album II", year: 1982}, {title: "HR Album III", year: 1983} ])
+
+#artist = new Table([{name: "Henry Rollins"}])
+
+#console.log remap("artist", orig)

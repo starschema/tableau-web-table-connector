@@ -82,8 +82,8 @@ build_tableau_connector = (description)->
   connector = tableau.makeConnector()
 
   connector.getColumnHeaders = ->
-    cols = description.columns(get_connection_data())
-    tableau.headersCallback( cols.names, cols.types )
+    description.columns(get_connection_data())
+    #tableau.headersCallback( cols.names, cols.types )
 
   connector.getTableData = (lastRecordToken)->
     description.rows( get_connection_data(), lastRecordToken)
