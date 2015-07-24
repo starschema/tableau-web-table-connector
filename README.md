@@ -15,3 +15,13 @@ coffee coffee/twitter_connector/twitter_auth_server.coffee
 
 Then navigate to ```http://localhost:3000/twitter.html``` in the
 Simulator / Tableau.
+
+# Building the mongo/raw json client
+
+```
+npm install
+./build-mongodb.sh
+```
+
+this copies the resources and builds the client using browserify.
+
