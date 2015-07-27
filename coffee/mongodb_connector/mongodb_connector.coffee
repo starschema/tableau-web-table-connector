@@ -19,12 +19,12 @@ load_json = (url, success_callback)->
 load_jsonp = (url, success_callback)->
   $.ajax
     url: url
-    async: false
+    #async: false
     jsonpCallback: JSONP_CALLBACK_NAME
     contentType: "application/json",
     dataType: 'jsonp',
     success: (data, textStatus, request)->
-      success_callback(data.rows)
+      success_callback(data)
     error: (xhr, ajaxOptions, thrownError)->
       console.error("Error during search request", thrownError)
       tableau.abortWithError "Error while trying to load '#{url}'. #{thrownError}"
@@ -54,9 +54,12 @@ wdc_base.make_tableau_connector
       # Add the jsonP stuff
       url = "#{url}/?jsonp=#{JSONP_CALLBACK_NAME}"
 
+      # Add some default page size
+      url = "#{url}&limit=#{data.page_size}"
+
 
       if data.mongodb_params && data.mongodb_params != ""
-        url = "#{url}#{data.mongodb_params}"
+        url = "#{url}&#{data.mongodb_params}"
 
       data.url = url
 
@@ -69,11 +72,26 @@ wdc_base.make_tableau_connector
       tableau.submit()
 
   rows: (connection_data, lastRecordToken)->
-    load_jsonp connection_data.url, (data)->
-      tableau_data = for row in data
+    offset_str = if lastRecordToken == "" then 0 else lastRecordToken
+    offseted_url = "#{connection_data.url}&skip=#{offset_str}"
+    console.log "offseted_url:", offseted_url
+    load_jsonp offseted_url, (data)->
+
+      {offset: offset, rows: rows, total_rows: total_rows} = data
+
+      console.log {offset: offset, rows: rows, total_rows: total_rows}
+
+      # when we reached the last page, it is signaled by returning
+      # 0 rows
+      has_more = (total_rows != 0)
+      has_more = false
+      # the next page is the one after the current
+      next_offset = offset + total_rows
+
+      tableau_data = for row in rows
         json_flattener.remap(row, null).rows
 
-      tableau.dataCallback(_.flatten(tableau_data), "", false)
+      tableau.dataCallback(_.flatten(tableau_data), next_offset.toString(), has_more)
 
 
   columns: (connection_data)->
@@ -81,11 +99,19 @@ wdc_base.make_tableau_connector
     load_jsonp connection_data.url, (data)->
       tableau.abortWithError("No rows available in data") if _.isEmpty(data)
 
-      first_row = _.first( json_flattener.remap(_.first(data)).rows )
+      # get the first row
+      first_row = _.first( json_flattener.remap(_.first(data.rows)).rows )
 
       datatypes = _.mapObject first_row, (v,k,o)->
        tableauHelpers.guessDataType(v)
-      console.log _.keys(first_row), datatypes
+
+      ## filter out any fields with a dollar in their name
+      #datatypes_safe = {}
+      #for k,v of datatypes
+        #datatypes_safe[k] = v unless /\$/.test(k)
+
+
+      #console.log("Metadata is:", _.keys(datatypes_safe), _.values(datatypes_safe)) 
 
       tableau.headersCallback( _.keys(datatypes), _.values(datatypes))
 

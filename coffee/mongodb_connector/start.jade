@@ -7,19 +7,13 @@
     .page-header
       h4 Connect to MongoDB
 
-      p
-        strong
-          | This connection requires &nbsp;
-          a(href="http://docs.mongodb.org/ecosystem/tools/http-interfaces/#simple-rest-api" target="_blank") setting up MongoDB v1.4+:
-        | This API is disabled by default, as it could provide unauthenticated access to data. Use <code>--rest</code> on the command line to enable, but be aware of security implications.
-
   .col-sm-12
 
     form
       .row
         .col-sm-3
           label(for="mongodb_host") MongoDB host
-          input.form-control(type="text" data-tableau-key="mongodb_host")
+          input.form-control(type="text" data-tableau-key="mongodb_host" )
 
         .col-sm-3
           label(for="mongodb_port") MongoDB port
@@ -27,14 +21,14 @@
 
         .col-sm-3
           label(for="mongodb_host") MongoDB Database
-          input.form-control(type="text" data-tableau-key="mongodb_db")
+          input.form-control(type="text" data-tableau-key="mongodb_db" )
 
         .col-sm-3
           label(for="mongodb_host") MongoDB Collection
-          input.form-control(type="text" data-tableau-key="mongodb_collection")
+          input.form-control(type="text" data-tableau-key="mongodb_collection" )
 
       .row
-        .col-sm-10
+        .col-sm-8
           label(for="mongodb_host") MongoDB additional Parameters
           input.form-control(type="text" data-tableau-key="mongodb_params")
 
@@ -43,24 +37,37 @@
             a(href="http://docs.mongodb.org/ecosystem/tools/http-interfaces/#simple-rest-api" target="_blank") in the MongoDB Simple REST API guide.
 
         .col-sm-2
-          label Connect
-          a.btn.btn-default(href="#" data-state-to="run_mongo") Connect to MongoDB
+          label Page size
+          input.form-control(type="number" data-tableau-key="page_size" value="1000")
 
-
-.row
-  .col-sm-12
-    .page-header
-      h4 Or connect to a raw JSON file
-
-  .col-sm-12
-
-    form
-      .row
-        .col-sm-10
-          label(for="url") JSON Url
-          input.form-control(type="text" data-tableau-key="url")
 
         .col-sm-2
           label Connect
-          a.btn.btn-default(href="#" data-state-to="run") Get raw JSON
+          a.btn.btn-default(href="#" data-state-to="run_mongo") Connect to MongoDB
+
+    .col-sm-12
+      p
+        strong
+          | This connection requires &nbsp;
+          a(href="http://docs.mongodb.org/ecosystem/tools/http-interfaces/#simple-rest-api" target="_blank") setting up MongoDB v1.4+:
+        | This API is disabled by default, as it could provide unauthenticated access to data. Use <code>--rest</code> on the command line to enable, but be aware of security implications.
+
+
+//
+  .row
+    .col-sm-12
+      .page-header
+        h4 Or connect to a raw JSON file
+
+    .col-sm-12
+
+      form
+        .row
+          .col-sm-10
+            label(for="url") JSON Url
+            input.form-control(type="text" data-tableau-key="url")
+
+          .col-sm-2
+            label Connect
+            a.btn.btn-default(href="#" data-state-to="run") Get raw JSON
 
