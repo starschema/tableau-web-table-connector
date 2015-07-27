@@ -44,9 +44,9 @@ orig =
 
 
 
-remap = (base_key, obj)->
+remap = (obj, base_key=null)->
   base_row = {}
-  key = (k) -> "#{base_key}.#{k}"
+  key = if base_key then  (k) -> "#{base_key}.#{k}" else (k) -> k
   # 1 add primitive values
   for k,v of obj
     if _.isString(v) or _.isNumber(v)
@@ -63,12 +63,12 @@ remap = (base_key, obj)->
         table_out = new Table
 
         for element in v
-          for row in remap(key(k), element).rows
+          for row in remap(element, key(k)).rows
             table_out.add_row(row)
         choices[k] = table_out
 
       when _.isObject(v)
-        children.push remap(key(k), v)
+        children.push remap(v, key(k))
 
   base_out = merge_tables( base_table, children... )
 

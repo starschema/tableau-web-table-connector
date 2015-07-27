@@ -62,7 +62,7 @@ wdc_base.make_tableau_connector
     load_json connection_data.url, (data)->
       #console.log data, textStatus
       tableau_data = for row in data
-        json_flattener.remap("row", row).rows
+        json_flattener.remap(row, null).rows
 
       tableau.dataCallback(_.flatten(tableau_data), "", false)
       #success_callback(
@@ -74,7 +74,7 @@ wdc_base.make_tableau_connector
       tableau.abortWithError("No rows available in data") if _.isEmpty(data)
       #console.log data, textStatus
       #tableau_data = for row in data
-      first_row = _.first( json_flattener.remap("row", _.first(data)).rows )
+      first_row = _.first( json_flattener.remap(_.first(data)).rows )
 
       datatypes = _.mapObject first_row, (v,k,o)->
        tableauHelpers.guessDataType(v)
