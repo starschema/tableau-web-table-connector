@@ -84,13 +84,14 @@ wdc_base.make_tableau_connector
       # when we reached the last page, it is signaled by returning
       # 0 rows
       has_more = (total_rows != 0)
-      has_more = false
       # the next page is the one after the current
       next_offset = offset + total_rows
 
+      # Remap each row
       tableau_data = for row in rows
         json_flattener.remap(row, null).rows
 
+      # Call back tableau
       tableau.dataCallback(_.flatten(tableau_data), next_offset.toString(), has_more)
 
 
@@ -102,16 +103,10 @@ wdc_base.make_tableau_connector
       # get the first row
       first_row = _.first( json_flattener.remap(_.first(data.rows)).rows )
 
+      # Guess the data types of the columns
       datatypes = _.mapObject first_row, (v,k,o)->
        tableauHelpers.guessDataType(v)
 
-      ## filter out any fields with a dollar in their name
-      #datatypes_safe = {}
-      #for k,v of datatypes
-        #datatypes_safe[k] = v unless /\$/.test(k)
-
-
-      #console.log("Metadata is:", _.keys(datatypes_safe), _.values(datatypes_safe)) 
-
+      # Call back tableau
       tableau.headersCallback( _.keys(datatypes), _.values(datatypes))
 
