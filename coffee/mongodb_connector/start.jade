@@ -53,6 +53,12 @@
         | This API is disabled by default, as it could provide unauthenticated access to data. Use <code>--rest</code> on the command line to enable, but be aware of security implications.
 
 
+      .text-muted
+        p Connecting to mongodb using the Simple REST API requires starting the mongod server with the <code>--rest</code> and <code>--jsonp</code> command line switches to enable the REST API and enable the connector to load data through JSONP.
+        p For example on Ubuntu this may mean:
+        code mongod --config /etc/mongodb.conf --rest --jsonp
+        p To access the REST API from a different machine you also need to change the <code>bind_ip</code> configuration property in your mongodb configuration form 127.0.0.1 (the default that comes with most mongodb packages) to 0.0.0.0 
+
 //
   .row
     .col-sm-12
