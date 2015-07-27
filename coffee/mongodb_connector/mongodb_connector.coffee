@@ -6,16 +6,6 @@ wdc_base = require '../connector_base/starschema_wdc_base.coffee'
 json_flattener = require './json_flattener.coffee'
 
 
-load_json = (url, success_callback)->
-  $.ajax
-    url: url
-    datatype: "json"
-    success: (data, textStatus, request)->
-      success_callback(data)
-    error: (xhr, ajaxOptions, thrownError)->
-      console.error("Error during search request", thrownError)
-      tableau.abortWithError "Error while trying to load '#{url}'. #{thrownError}"
-
 load_jsonp = (url, success_callback)->
   $.ajax
     url: url
@@ -26,7 +16,6 @@ load_jsonp = (url, success_callback)->
     success: (data, textStatus, request)->
       success_callback(data)
     error: (xhr, ajaxOptions, thrownError)->
-      console.error("Error during search request", thrownError)
       tableau.abortWithError "Error while trying to load '#{url}'. #{thrownError}"
 
 JSONP_CALLBACK_NAME = "mongodb_wdc_jsonp_callback"
@@ -37,16 +26,11 @@ wdc_base.make_tableau_connector
   steps:
     start:
       template: require './start.jade'
-    run:
-      template: require './run.jade'
     run_mongo:
       template: require './run.jade'
 
 
   transitions:
-    "start > run": (data)->
-      _.extend data, wdc_base.fetch_inputs("#state-start")
-
     "start > run_mongo": (data)->
       _.extend data, wdc_base.fetch_inputs("#state-start")
       url = "http://#{data.mongodb_host}:#{data.mongodb_port}/#{data.mongodb_db}/#{data.mongodb_collection}"
@@ -63,10 +47,6 @@ wdc_base.make_tableau_connector
 
       data.url = url
 
-    "enter run": (data)->
-      wdc_base.set_connection_data( data )
-      tableau.submit()
-
     "enter run_mongo": (data)->
       wdc_base.set_connection_data( data )
       tableau.submit()
@@ -74,12 +54,10 @@ wdc_base.make_tableau_connector
   rows: (connection_data, lastRecordToken)->
     offset_str = if lastRecordToken == "" then 0 else lastRecordToken
     offseted_url = "#{connection_data.url}&skip=#{offset_str}"
-    console.log "offseted_url:", offseted_url
+
     load_jsonp offseted_url, (data)->
 
       {offset: offset, rows: rows, total_rows: total_rows} = data
-
-      console.log {offset: offset, rows: rows, total_rows: total_rows}
 
       # when we reached the last page, it is signaled by returning
       # 0 rows
