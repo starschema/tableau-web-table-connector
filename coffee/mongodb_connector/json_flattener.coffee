@@ -27,27 +27,14 @@ merge_tables = (t1, tables...)->
   merge_table_pair(t1, merge_tables(tables...))
 
 
-orig =
-  name: "Henry Rollins"
-  attributes: {
-    weight: 75
-    height: 175
-    tags: [
-      { text:"Healthy"}
-      { text: "Unorthodox"}
-    ]
-  }
-  bands: [
-    { band: "Black flag", albums: [ {title: "BF Album I", year: 1981}, {title: "BF Album II", year: 1982}, {title: "BF Album III", year: 1983} ] }
-    { band: "Henry Rollins band", albums: [{title: "HR Album I", year: 1981}, {title: "HR Album II", year: 1982}, {title: "HR Album III", year: 1983} ] }
-  ]
-
-
 
 remap = (obj, base_key=null)->
   base_row = {}
+
+  # The function to retrieve the key
   key = if base_key then  (k) -> "#{base_key}.#{k}" else (k) -> k
-  # 1 add primitive values
+
+  # First add primitive values
   for k,v of obj
     if _.isString(v) or _.isNumber(v)
       base_row[key(k)] = v
@@ -56,8 +43,12 @@ remap = (obj, base_key=null)->
   children = []
   choices = {}
 
+  # For each attribute
   for k,v of obj
     switch
+
+      # Add arrays as choices for the key
+      # recursively
       when _.isArray(v)
 
         table_out = new Table
@@ -67,11 +58,18 @@ remap = (obj, base_key=null)->
             table_out.add_row(row)
         choices[k] = table_out
 
+      # Add objects as extensions for their key
+      # recursively
       when _.isObject(v)
         children.push remap(v, key(k))
 
+  # Merge the extensions to the base attributes after
+  # all their children and choice tables are already extended
   base_out = merge_tables( base_table, children... )
 
+  # Then finally merge all the choices to the extended base table
+  # ( so the attributes coming from the extensions are mapped across
+  # all choices here)
   for k,v of choices
     base_out = merge_tables( base_out, v)
 
@@ -80,13 +78,3 @@ remap = (obj, base_key=null)->
 _.extend module.exports,
   remap: remap
 
-
-#black_flag_band = new Table([{band:"Black flag"}])
-#black_flag_albums = new Table([{title: "BF Album I", year: 1981}, {title: "BF Album II", year: 1982}, {title: "BF Album III", year: 1983} ])
-
-#hr_band = new Table([{band: "Henry Rollins band"}])
-#hr_albums = new Table([{title: "HR Album I", year: 1981}, {title: "HR Album II", year: 1982}, {title: "HR Album III", year: 1983} ])
-
-#artist = new Table([{name: "Henry Rollins"}])
-
-#console.log remap("artist", orig)

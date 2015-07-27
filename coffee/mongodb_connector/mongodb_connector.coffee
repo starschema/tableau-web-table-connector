@@ -12,16 +12,24 @@ load_json = (url, success_callback)->
     datatype: "json"
     success: (data, textStatus, request)->
       success_callback(data)
-      #console.log data, textStatus
-      #tableau_data = for row in data
-        #json_flattener.remap("row", row).rows
-
-      #console.log _.flatten(tableau_data)
-      #success_callback(
-
     error: (xhr, ajaxOptions, thrownError)->
       console.error("Error during search request", thrownError)
-      tableau.abortWithError "Error while trying to load the tweets. #{thrownError}"
+      tableau.abortWithError "Error while trying to load '#{url}'. #{thrownError}"
+
+load_jsonp = (url, success_callback)->
+  $.ajax
+    url: url
+    async: false
+    jsonpCallback: JSONP_CALLBACK_NAME
+    contentType: "application/json",
+    dataType: 'jsonp',
+    success: (data, textStatus, request)->
+      success_callback(data.rows)
+    error: (xhr, ajaxOptions, thrownError)->
+      console.error("Error during search request", thrownError)
+      tableau.abortWithError "Error while trying to load '#{url}'. #{thrownError}"
+
+JSONP_CALLBACK_NAME = "mongodb_wdc_jsonp_callback"
 
 wdc_base.make_tableau_connector
   name: "MongoDB connector"
@@ -41,10 +49,14 @@ wdc_base.make_tableau_connector
 
     "start > run_mongo": (data)->
       _.extend data, wdc_base.fetch_inputs("#state-start")
-      url = "http://#{data.mongodb_host}:#{data.mongodb_port}/#{data.mongodb_collection}/#{data.mongodb_collection}"
+      url = "http://#{data.mongodb_host}:#{data.mongodb_port}/#{data.mongodb_db}/#{data.mongodb_collection}"
 
-      if data.mongodb_params && data.mongodb_params
-        url = "#{url}/?#{data.mongodb_params}"
+      # Add the jsonP stuff
+      url = "#{url}/?jsonp=#{JSONP_CALLBACK_NAME}"
+
+
+      if data.mongodb_params && data.mongodb_params != ""
+        url = "#{url}#{data.mongodb_params}"
 
       data.url = url
 
@@ -53,27 +65,22 @@ wdc_base.make_tableau_connector
       tableau.submit()
 
     "enter run_mongo": (data)->
-      console.log data.url, data
       wdc_base.set_connection_data( data )
       tableau.submit()
 
   rows: (connection_data, lastRecordToken)->
-    #tableau.dataCallback([], "", false)
-    load_json connection_data.url, (data)->
-      #console.log data, textStatus
+    load_jsonp connection_data.url, (data)->
       tableau_data = for row in data
         json_flattener.remap(row, null).rows
 
       tableau.dataCallback(_.flatten(tableau_data), "", false)
-      #success_callback(
 
 
   columns: (connection_data)->
 
-    load_json connection_data.url, (data)->
+    load_jsonp connection_data.url, (data)->
       tableau.abortWithError("No rows available in data") if _.isEmpty(data)
-      #console.log data, textStatus
-      #tableau_data = for row in data
+
       first_row = _.first( json_flattener.remap(_.first(data)).rows )
 
       datatypes = _.mapObject first_row, (v,k,o)->
@@ -81,6 +88,4 @@ wdc_base.make_tableau_connector
       console.log _.keys(first_row), datatypes
 
       tableau.headersCallback( _.keys(datatypes), _.values(datatypes))
-      #console.log _.flatten(tableau_data)
-      #success_callback(
 

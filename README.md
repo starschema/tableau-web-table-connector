@@ -18,10 +18,23 @@ Simulator / Tableau.
 
 # Building the mongo/raw json client
 
+Connecting to mongodb using the Simple REST API requires starting the
+mongod server with the ```--rest``` and ```--jsonp``` command line
+switches to enable the REST API and enable the connector to load data
+through JSONP.
+
+
+For example on Ubuntu this may mean:
+
 ```
-npm install
+mongod --config /etc/mongodb.conf --rest --jsonp
+```
+
+Then build the mongodb connector:
+
+```
 ./build-mongodb.sh
 ```
 
-this copies the resources and builds the client using browserify.
-
+this copies the resources and builds the client using browserify and
+places the results in the ```dist``` folder.
