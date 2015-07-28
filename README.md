@@ -1,3 +1,13 @@
+# Starschema Tableau Web Table Connector (WDC) Toolkit / ConnectorBase [![Build Status](https://travis-ci.org/starschema/tableau-web-table-connector.svg)](https://travis-ci.org/starschema/tableau-web-table-connector)
+
+ConnectorBase has a few concepts that may feel different to the usual WDC development process:
+
+ - A connector is built from a number of states/steps (like setup, authentication, running the connector), where each state/step has a separate representation in the UI (like a setup page, an authentication page, etc.)
+
+ - The form inputs used by the connector are declared in the template for each state (instead of declaring them in the connector code itself), so you can keep your connector code DRY
+
+ - The connector source code defines the JavaScript to be ran during transitions from one state to another. (like get the data from all the inputs and call tableau.submit() when transitioning from the start state to the run state.)
+
 # Building the twitter client
 
 ```
