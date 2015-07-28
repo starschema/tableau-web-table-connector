@@ -12,5 +12,3 @@ cp resources/jquery/1.11.1/* ${JQUERY_DIR}
 cp resources/tableau-wdc-js/tableauwdc-1.1.0.js ./dist
 cp resources/mongodb.html ./dist
 browserify --extension=".coffee"  coffee/mongodb_connector/mongodb_connector.coffee > dist/twdc-mongodb.js
-
-#node dist/twdc-twitter.js
