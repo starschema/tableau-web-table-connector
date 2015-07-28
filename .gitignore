@@ -1,3 +1,5 @@
 resources/tableau-wdc-js/*
 node_modules/**/*
 dist/**/*
+
+coffee/twitter_connector/twitter_keys.coffee

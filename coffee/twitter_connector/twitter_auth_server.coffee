@@ -9,17 +9,13 @@ console.log "startup"
 
 TWITTER_GET_OAUTH_TOKEN_URL = "https://api.twitter.com/oauth2/token"
 
-CONSUMER_KEY =	"kWyxiJH90fDiHGFv372v6g1OZ"
-CONSUMER_SECRET =	"yGxQNtqQL2KJXWmBYdJolG3y5I6YEmZOT3WXPbWNEzmlBBXPAf"
-ACCESS_TOKEN = "80296682-A2qWP5Kb8CMdnFKck2Xx8rWZU913wT9TpueFNMZdD"
-ACCESS_TOKEN_SECRET="lQCRodhGfm7aiWaUraqFhQZ4r5oPKJhAe07yep7lpBluO"
-
+keys = require './twitter_keys.coffee'
 
 client = new Twitter
-  consumer_key: CONSUMER_KEY,
-  consumer_secret: CONSUMER_SECRET,
-  access_token_key: ACCESS_TOKEN,
-  access_token_secret: ACCESS_TOKEN_SECRET
+  consumer_key: keys.CONSUMER_KEY,
+  consumer_secret: keys.CONSUMER_SECRET,
+  access_token_key: keys.ACCESS_TOKEN,
+  access_token_secret: keys.ACCESS_TOKEN_SECRET
 
 app.get '/', (req, res)-> res.send("<h1>Hello</h1>")
 
