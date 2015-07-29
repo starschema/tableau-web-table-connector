@@ -100,14 +100,13 @@ connector_data =
       wdc_base.set_connection_data( data )
       tableau.submit()
 
-  rows: (connection_data, lastRecordToken)->
+  rows: (connection_data, lastRecordTokenBase64)->
+    # De-base64 the last record token to get around a Tableau Desktop issue
+    # with quotes in the lastRecordToken
+    lastRecordToken = atob(lastRecordTokenBase64)
+
     tableau.log "Starting to fetch a batch -- lastRecordToken:'#{lastRecordToken}'"
     tableau.abortWithError("No search terms provided") unless connection_data.q
-
-    ## The pagination data
-    #if lastRecordToken != ""
-      #tableau.abortWithError("Error while parsing pagination token:#{JSON.stringify lastRecordToken}")
-      #return
 
     pagination = {
       url: "/search?q=#{encodeURIComponent(connection_data.q)}"
@@ -136,8 +135,11 @@ connector_data =
 
         have_more = (next_page.pages > 0)
 
-        #tableau.abortWithError("stringify: #{JSON.stringify(next_page)} have_more:#{ have_more}")
-        tableau.dataCallback(tableau_data, JSON.stringify(next_page), have_more )
+        # Re-encode the new lastRecordToken with base64 to get around
+        # the Tableau Desktop lastRecordToken issue.
+        reencodedLastRecordToken = btoa(JSON.stringify(next_page))
+
+        tableau.dataCallback(tableau_data, reencodedLastRecordToken, have_more )
 
       error: (xhr, ajaxOptions, thrownError)->
         console.error("Error during search request", thrownError)
