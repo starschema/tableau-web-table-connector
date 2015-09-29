@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "JSONSelect": "^0.4.0",
+    "bobj-access": "^1.0.2",
     "bootstrap": "^3.3.4",
     "csv": "^0.4.1",
     "express": "^4.13.1",
