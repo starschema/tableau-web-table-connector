@@ -66,3 +66,22 @@ places the results in the ```dist``` folder.
 
 Then fire up a web server in the dist directory and the mongodb
 connector should be accessible with ```mongodb.html```.
+
+# Building the Business Objects connector
+
+```
+npm install
+./build-sap-bo.sh
+```
+
+this copies the resources and builds the client using browserify.
+
+# Running the web server
+
+```
+coffee coffee/twitter_connector/twitter_auth_server.coffee
+```
+
+Then navigate to ```http://localhost:3000/sapbo.html``` in the
+Simulator / Tableau.
+
