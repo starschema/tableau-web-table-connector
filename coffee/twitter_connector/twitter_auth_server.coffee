@@ -1,6 +1,7 @@
 express = require 'express'
 Twitter = require('twitter')
 http_request = require 'request'
+sap = require 'bobj-access'
 
 app = express()
 
@@ -33,6 +34,26 @@ app.get '/search', (req, res)->
 
     res.setHeader('Content-Type', 'application/json')
     res.send(tweet_json)
+
+app.get '/sap/tabledefinitions', (req, res) ->
+    sap.getTables req.query.wsdl, req.query.credentials, (err, tables) ->
+        unless err?
+            tables_json = JSON.stringify tables
+            res.setHeader('Content-Type', 'application/json')
+            res.send(tables_json)
+            console.log "Metadata response sent"
+        else
+            res.status(500).send()
+
+app.get '/sap/tablerows', (req, res) ->
+    sap.getTableData req.query.wsdl, req.query.credentials, (err, tables) ->
+        unless err?
+            tables_json = JSON.stringify tables
+            res.setHeader('Content-Type', 'application/json')
+            res.send(tables_json)
+            console.log "Data Response sent.", tables.length
+        else
+            res.status(500).send()
 
 # serve the static files of the connector
 app.use(express.static('dist'))

@@ -3,3 +3,7 @@ node_modules/**/*
 dist/**/*
 
 coffee/twitter_connector/twitter_keys.coffee
+
+# Editor files
+*tags
+*.swp
