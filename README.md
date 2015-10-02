@@ -10,6 +10,9 @@ ConnectorBase has a few concepts that may feel different to the usual WDC develo
 
 # Business Objects connector
 
+
+![](http://www.virtdb.com/images/bo-wdc-tableau.gif)
+
 ## Building the connector
 
 You should never trust any tableau connector on the internet. Check the source codes before you deploy or run anything on your environment. Therefore we don't provide any "prebuilt" connector, you should do it for yourselves. 
