@@ -19,7 +19,7 @@ npm install
 ./build-sap-bo.sh
 ```
 
-this copies the resources and builds the client using browserify. For more information on how to use SAP BusinessObjects connection [http://databoss.starschema.net/accessing-sap-businessobjects-from-tableau-using-web-data-connector/](check out this article). 
+this copies the resources and builds the client using browserify. For more information on how to use SAP BusinessObjects connection (http://databoss.starschema.net/accessing-sap-businessobjects-from-tableau-using-web-data-connector/)[check out this article]. 
 
 ## Running the BO proxy web service
 
