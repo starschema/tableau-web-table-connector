@@ -8,6 +8,27 @@ ConnectorBase has a few concepts that may feel different to the usual WDC develo
 
  - The connector source code defines the JavaScript to be ran during transitions from one state to another. (like get the data from all the inputs and call tableau.submit() when transitioning from the start state to the run state.)
 
+# Building the Business Objects connector
+
+```
+npm install
+./build-sap-bo.sh
+```
+
+this copies the resources and builds the client using browserify. For more information on how to use SAP BusinessObjects connection [http://databoss.starschema.net/accessing-sap-businessobjects-from-tableau-using-web-data-connector/](check out this article). 
+
+## Running the BO proxy web service
+
+```
+coffee coffee/twitter_connector/twitter_auth_server.coffee
+```
+
+Then navigate to ```http://localhost:3000/sapbo.html``` in the
+Simulator / Tableau. I know, why do we call BO proxy as twitter auth server? 
+Well, two words: history and refactor (soon).
+
+
+
 # Building the twitter client
 
 ```
@@ -67,21 +88,4 @@ places the results in the ```dist``` folder.
 Then fire up a web server in the dist directory and the mongodb
 connector should be accessible with ```mongodb.html```.
 
-# Building the Business Objects connector
-
-```
-npm install
-./build-sap-bo.sh
-```
-
-this copies the resources and builds the client using browserify.
-
-# Running the web server
-
-```
-coffee coffee/twitter_connector/twitter_auth_server.coffee
-```
-
-Then navigate to ```http://localhost:3000/sapbo.html``` in the
-Simulator / Tableau.
 
