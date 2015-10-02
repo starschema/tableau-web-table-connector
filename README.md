@@ -8,7 +8,11 @@ ConnectorBase has a few concepts that may feel different to the usual WDC develo
 
  - The connector source code defines the JavaScript to be ran during transitions from one state to another. (like get the data from all the inputs and call tableau.submit() when transitioning from the start state to the run state.)
 
-# Building the Business Objects connector
+# Business Objects connector
+
+## Building the connector
+
+You should never trust any tableau connector on the internet. Check the source codes before you deploy or run anything on your environment. Therefore we don't provide any "prebuilt" connector, you should do it for yourselves. 
 
 ```
 npm install
