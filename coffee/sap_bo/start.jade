@@ -1,24 +1,16 @@
 .row
-  .col-sm-12
-    .page-header
-      h1
-        | SAP Business Objects
-        small web data connector
-      h6
-        | Get live data with 
-        a(href="http://www.virtdb.com/webdataconnector") VirtDB
+    .col-sm-12
+        .page-header
+            h1
+                | SAP Business Objects
+                small web data connector
+            h6
+                | Get live data with
+                a(href="http://www.virtdb.com/webdataconnector") VirtDB
 
-  .col-sm-12
-    form.form-horizontal
-
-      .form-group
-        label(for="wsdl") WSDL Url
-        input.form-control#wsdl(type="text", name="wsdl" data-tableau-key="wsdl" )
-      .form-group
-        label(for="auth-username") Auth Username
-        input.form-control#auth-username(type="text" data-tableau-key="auth_username" )
-
-      .form-group
-        label(for="auth-username") Auth Password
-        input.form-control#auth-password(type="password" data-tableau-key="auth_password" )
-      a.btn.btn-primary#submit-button(href="#" data-state-to="run") Load 
+    .col-sm-12
+        form.form-horizontal
+            .form-group
+                label(for="wsdl") WSDL Url
+                input.form-control#wsdl(type="text", name="wsdl" data-tableau-key="wsdl" )
+            a.btn.btn-primary#submit-button(href="#" data-state-to="configuration") Next

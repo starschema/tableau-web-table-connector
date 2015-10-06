@@ -39,23 +39,27 @@ catch ex
 
 app.get '/', (req, res)-> res.send("<h1>Hello</h1>")
 
-app.get '/sap/tabledefinitions', (req, res) ->
-    sap.getTables req.query.wsdl, req.query.credentials, (err, tables) ->
+app.get '/sap/tablelist', (req, res) ->
+    sap.getTableList req.query.wsdl, (err, tableList) ->
         unless err?
-            tables_json = JSON.stringify tables
-            res.setHeader('Content-Type', 'application/json')
-            res.send(tables_json)
-            console.log "Metadata response sent"
+            res.json tableList
+            console.log "Table list response sent", tableList
+        else
+            res.status(500).send()
+
+app.get '/sap/tabledefinitions', (req, res) ->
+    sap.getFields req.query.wsdl, req.query.credentials, req.query.table, (err, tables) ->
+        unless err?
+            res.json tables
+            console.log "Table definition response sent. table: ", req.query.table
         else
             res.status(500).send()
 
 app.get '/sap/tablerows', (req, res) ->
-    sap.getTableData req.query.wsdl, req.query.credentials, (err, tables) ->
+    sap.getTableData req.query.wsdl, req.query.credentials, req.query.table, (err, tables) ->
         unless err?
-            tables_json = JSON.stringify tables
-            res.setHeader('Content-Type', 'application/json')
-            res.send(tables_json)
-            console.log "Data Response sent.", tables.length
+            res.json tables
+            console.log "Data Response sent.table: ", req.query.table
         else
             res.status(500).send()
 
