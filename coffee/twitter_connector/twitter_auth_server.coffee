@@ -1,7 +1,6 @@
 express = require 'express'
 Twitter = require('twitter')
 http_request = require 'request'
-sap = require 'bobj-access'
 
 app = express()
 
@@ -34,34 +33,10 @@ try
         res.setHeader('Content-Type', 'application/json')
         res.send(tweet_json)
 catch ex
-    console.log "Failed to initialize twitter server, but it doesn't affect other functionalities.", ex
-
+    console.log "Failed to initialize twitter server. Please make sure twitter_keys.coffee is filled with valid credentials.", ex
+    process.exit 1
 
 app.get '/', (req, res)-> res.send("<h1>Hello</h1>")
-
-app.get '/sap/tablelist', (req, res) ->
-    sap.getTableList req.query.wsdl, (err, tableList) ->
-        unless err?
-            res.json tableList
-            console.log "Table list response sent", tableList
-        else
-            res.status(500).send()
-
-app.get '/sap/tabledefinitions', (req, res) ->
-    sap.getFields req.query.wsdl, req.query.credentials, req.query.table, (err, tables) ->
-        unless err?
-            res.json tables
-            console.log "Table definition response sent. table: ", req.query.table
-        else
-            res.status(500).send()
-
-app.get '/sap/tablerows', (req, res) ->
-    sap.getTableData req.query.wsdl, req.query.credentials, req.query.table, (err, tables) ->
-        unless err?
-            res.json tables
-            console.log "Data Response sent.table: ", req.query.table
-        else
-            res.status(500).send()
 
 # serve the static files of the connector
 app.use(express.static('dist'))

@@ -29,14 +29,11 @@ this copies the resources and builds the client using browserify. For more infor
 ## Running the BO proxy web service
 
 ```
-coffee coffee/twitter_connector/twitter_auth_server.coffee
+coffee coffee/sap_bo/proxy_server.coffee
 ```
 
 Then navigate to ```http://localhost:3000/sapbo.html``` in the
-Simulator / Tableau. I know, why do we call BO proxy as twitter auth server? 
-Well, two words: history and refactor (soon).
-
-
+Simulator / Tableau. 
 
 # Building the twitter client
 
