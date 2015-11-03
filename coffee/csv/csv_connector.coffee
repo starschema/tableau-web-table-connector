@@ -6,66 +6,60 @@ csv = require 'csv'
 tableauHelpers = require '../connector_base/tableau_helpers.coffee'
 wdc_base = require '../connector_base/starschema_wdc_base.coffee' 
 
+
+load_csv = (url, params, success_callback)->
+  $.ajax
+    url: url
+    # TODO: Setting this gives us some errors on some servers.
+    #contentType: "text/html;charset=#{params.charset}"
+
+    success: (res)->
+      opts = _.defaults params,
+        quote: '"'
+        delimiter: ','
+        columns: true
+        auto_parse: true
+
+      csv.parse res, opts, (err,data)-> success_callback(data)
+
+    error: (xhr, ajaxOptions, thrownError)->
+      tableau.abortWithError "Error while trying to load '#{url}'. #{thrownError}" 
+
+
 wdc_base.make_tableau_connector
   name: "Simple CSV connector"
 
   steps:
     start:
       template: require './start.jade'
-    run_csv:
+    run:
       template: require './run.jade'
 
 
   transitions:
-    "start > run_mongo": (data)->
+    "start > run": (data)->
       _.extend data, wdc_base.fetch_inputs("#state-start")
-      url = "http://#{data.mongodb_host}:#{data.mongodb_port}/#{data.mongodb_db}/#{data.mongodb_collection}"
-
-      # Add the jsonP stuff
-      url = "#{url}/?jsonp=#{JSONP_CALLBACK_NAME}"
-
-      # Add some default page size
-      url = "#{url}&limit=#{data.page_size}"
 
 
-      if data.mongodb_params && data.mongodb_params != ""
-        url = "#{url}&#{data.mongodb_params}"
-
-      data.url = url
-
-    "enter run_mongo": (data)->
+    "enter run": (data)->
       wdc_base.set_connection_data( data )
       tableau.submit()
 
   rows: (connection_data, lastRecordToken)->
-    offset_str = if lastRecordToken == "" then 0 else lastRecordToken
-    offseted_url = "#{connection_data.url}&skip=#{offset_str}"
 
-    load_csv offseted_url, (data)->
-
-      {offset: offset, rows: rows, total_rows: total_rows} = data
-
-      # when we reached the last page, it is signaled by returning
-      # 0 rows
-      has_more = (total_rows != 0)
-      # the next page is the one after the current
-      next_offset = offset + total_rows
-
-      # Remap each row
-      tableau_data = for row in rows
-        json_flattener.remap(row, null).rows
+    load_csv connection_data.url, connection_data, (data)-> 
 
       # Call back tableau
-      tableau.dataCallback(_.flatten(tableau_data), next_offset.toString(), has_more)
+      tableau.dataCallback data, "", false 
 
 
   columns: (connection_data)->
 
-    load_csv connection_data.url, (data)->
+    load_csv connection_data.url, connection_data, (data)-> 
       tableau.abortWithError("No rows available in data") if _.isEmpty(data)
 
       # get the first row
-      first_row = _.first( data.rows )
+      first_row = _.first data
 
       # Guess the data types of the columns
       datatypes = _.mapObject first_row, (v,k,o)->

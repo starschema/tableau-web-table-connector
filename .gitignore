@@ -1,4 +1,5 @@
-resources/tableau-wdc-js/*
+# Let's make it easy and add it. Maybe a git link to Tableau's repo would make more sense?
+# resources/tableau-wdc-js/*
 node_modules/**/*
 dist/**/*
 
@@ -7,3 +8,4 @@ coffee/twitter_connector/twitter_keys.coffee
 # Editor files
 *tags
 *.swp
+*~
