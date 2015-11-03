@@ -1,6 +1,6 @@
 # Starschema Tableau Web Table Connector (WDC) Toolkit / ConnectorBase [![Build Status](https://travis-ci.org/starschema/tableau-web-table-connector.svg)](https://travis-ci.org/starschema/tableau-web-table-connector)
 
-Starschema's Tableau Web Table Connector Toolkit enables you to develop Web Data Connectors in CoffeeScript more easily, elegantly. It comes with sample connectors for **SAP BusinessObjects. Twitter, MongoDB and Github**. 
+Starschema's Tableau Web Table Connector Toolkit enables you to develop Web Data Connectors in CoffeeScript more easily, elegantly. It comes with sample connectors for **SAP BusinessObjects. Twitter, MongoDB, Github and generic CSV**. 
 
 The framework (or as we call _ConnectorBase_) has a few concepts that may feel different to the usual WDC development process:
 
