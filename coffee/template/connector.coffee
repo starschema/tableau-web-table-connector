@@ -1,33 +1,23 @@
 $ = require 'jquery'
 _ = require 'underscore'
-csv = require 'csv'
 
 
 tableauHelpers = require '../connector_base/tableau_helpers.coffee'
 wdc_base = require '../connector_base/starschema_wdc_base.coffee'
 
-
-load_csv = (url, params, success_callback)->
+# TODO: implement your HTTP logic
+load_url = (url, success_callback)->
   $.ajax
     url: url
-    # TODO: Setting this gives us some errors on some servers.
-    #contentType: "text/html;charset=#{params.charset}"
-
     success: (res)->
-      opts = _.defaults params,
-        quote: '"'
-        delimiter: ','
-        columns: true
-        auto_parse: true
-
-      csv.parse res, opts, (err,data)-> success_callback(data)
+      success_callback(data)
 
     error: (xhr, ajaxOptions, thrownError)->
-      tableau.abortWithError "Error while trying to load '#{url}'. #{thrownError}" 
+      tableau.abortWithError "Error while trying to load '#{url}'. #{thrownError}"
 
 
 wdc_base.make_tableau_connector
-  name: "Simple CSV connector"
+  name: "Simple XXX connector"
 
   steps:
     start:
@@ -47,15 +37,15 @@ wdc_base.make_tableau_connector
 
   rows: (connection_data, lastRecordToken)->
 
-    load_csv connection_data.url, connection_data, (data)-> 
+    load_url connection_data.url, (data)->
 
       # Call back tableau
-      tableau.dataCallback data, "", false 
+      tableau.dataCallback data, "", false
 
 
   columns: (connection_data)->
 
-    load_csv connection_data.url, connection_data, (data)-> 
+    load_url connection_data.url, (data)->
       tableau.abortWithError("No rows available in data") if _.isEmpty(data)
 
       # get the first row
@@ -67,4 +57,3 @@ wdc_base.make_tableau_connector
 
       # Call back tableau
       tableau.headersCallback( _.keys(datatypes), _.values(datatypes))
- 
