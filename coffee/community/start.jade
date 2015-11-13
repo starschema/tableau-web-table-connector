@@ -1,0 +1,13 @@
+h3 Connect to Data
+
+.row
+  .col-sm-12
+    label(for="after") Enter first date to check
+    input.form-control(type="text" data-tableau-key="after")
+    p.help-block
+      | Search posts after a give date. Format is ISO date/time:
+      code 2015-11-11T01:13:29.851+0200 or 2015-11-11
+
+.row
+  .col-sm-12
+      a.btn.btn-default(href="#" data-state-to="run") Load Data
