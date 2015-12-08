@@ -1,8 +1,11 @@
 express = require 'express'
+cors = require 'cors'
 http_request = require 'request'
 sap = require 'bobj-access'
 
 app = express()
+app.use(cors())
+
 
 app.get '/', (req, res)-> res.send("<h1>Hello</h1>")
 

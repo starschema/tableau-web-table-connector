@@ -7,6 +7,7 @@
     "JSONSelect": "^0.4.0",
     "bobj-access": "^2.0",
     "bootstrap": "^3.3.4",
+    "cors": "^2.7.1",
     "csv": "^0.4.1",
     "express": "^4.13.1",
     "jquery": "^2.1.3",
