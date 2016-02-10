@@ -11,4 +11,4 @@ cp resources/jquery/1.11.1/* ${JQUERY_DIR}
 
 cp resources/tableau-wdc-js/tableauwdc-1.1.0.js ./dist
 cp resources/sapbo.html ./dist
-browserify --extension=".coffee"  coffee/sap_bo/sap_bo_connector.coffee > dist/twdc_sap_bo_connector.js
+node node_modules/browserify/bin/cmd.js --extension=".coffee"  coffee/sap_bo/sap_bo_connector.coffee > dist/twdc_sap_bo_connector.js
