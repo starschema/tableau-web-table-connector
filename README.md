@@ -19,17 +19,17 @@ The framework (or as we call _ConnectorBase_) has a few concepts that may feel d
 
 You should never trust any tableau connector on the internet. Check the source codes before you deploy or run anything on your environment. Therefore we don't provide any "prebuilt" connector, you should do it for yourselves. 
 
-### Linux / OSX
-```
-npm install
-./build-sap-bo.sh
-```
+### The necessary steps to compile
 
-### Windows
-```
-npm install
-./build-sap-bo.bat
-```
+- download node.js and install it (https://nodejs.org/en/) 
+- Update NPM by typing "npm install npm -g"
+- Install Coffee "npm install -g coffee-script" (CoffeeScript is a little language that compiles into JavaScript.)
+- Download the tableau-web-table-connector zip, and extract into a directory
+- Open a command shell as Administrator
+- run "npm install" from the administrator command shell while in the extracted directory
+- run "build-sap-bo.sh" from the administrator command shell while in the extracted directory
+- run "coffee coffee/sap_bo/proxy_server.coffee" from the administrator command shell while in the extracted directory
+
 
 this copies the resources and builds the client using browserify. For more information on how to use SAP BusinessObjects connection [check out this article](http://databoss.starschema.net/accessing-sap-businessobjects-from-tableau-using-web-data-connector/). 
 
