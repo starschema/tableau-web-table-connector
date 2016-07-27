@@ -20,6 +20,10 @@ load_csv = (url, params, success_callback)->
         columns: true
         auto_parse: true
 
+      # Handle tab as delimiter
+      if opts.delimiter = 'TAB'
+        opts.delimiter = "\t"
+
       csv.parse res, opts, (err,data)-> success_callback(data)
 
     error: (xhr, ajaxOptions, thrownError)->
