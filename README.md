@@ -42,7 +42,9 @@ coffee coffee/sap_bo/proxy_server.coffee
 Then navigate to ```http://localhost:3000/sapbo.html``` in the
 Simulator / Tableau. 
 
-# Building the twitter client
+# Twitter Client
+
+## Building the twitter client
 
 ```
 npm install
@@ -51,7 +53,7 @@ npm install
 
 this copies the resources and builds the client using browserify.
 
-# Running the twitter client / server
+## Running the twitter client / server
 
 ```
 coffee coffee/twitter_connector/twitter_auth_server.coffee
@@ -59,6 +61,8 @@ coffee coffee/twitter_connector/twitter_auth_server.coffee
 
 Then navigate to ```http://localhost:3000/twitter.html``` in the
 Simulator / Tableau.
+
+# MongoDB / raw JSON client
 
 # Building the mongo/raw json client
 
@@ -100,5 +104,22 @@ places the results in the ```dist``` folder.
 
 Then fire up a web server in the dist directory and the mongodb
 connector should be accessible with ```mongodb.html```.
+
+
+# CSV Connector
+
+## Building the CSV connector
+
+```
+# Linux
+./build-csv.sh
+
+# Windows
+build-csv.bat
+```
+
+## Using the CSV Connector
+
+Copy the built files in the `dist` folder to the root of your webserver, then open `csv.html` in your browser.
 
 
