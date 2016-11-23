@@ -85,8 +85,8 @@ build_tableau_connector = (description)->
   connector.getSchema = (schemaCallback)->
     description.columns(get_connection_data(), schemaCallback)
 
-  connector.getData = (lastRecordToken)->
-    description.rows( get_connection_data(), lastRecordToken)
+  connector.getData = (table, doneCallback)->
+    description.rows( get_connection_data(), table, doneCallback)
 
   tableau.registerConnector(connector)
 
