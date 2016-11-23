@@ -4,19 +4,14 @@ wdc_base = require '../connector_base/starschema_wdc_base.coffee'
 
 transformType = (type) ->
     switch type
-        when 'STRING' then 'string'
-        when 'DOUBLE', 'FLOAT' then 'float'
-        when 'INT32', 'INT64', 'UINT32', 'UINT64' then 'int'
-        when 'DATE' then 'date'
-        else 'string'
+        when 'STRING' then tableau.dataTypeEnum.string
+        when 'DOUBLE', 'FLOAT' then  tableau.dataTypeEnum.float
+        when 'INT32', 'INT64', 'UINT32', 'UINT64' then tableau.dataTypeEnum.int
+        when 'DATE' then tableau.dataTypeEnum.date
+        else tableau.dataTypeEnum.string
 
-fieldNames = (fields) ->
-    fields.map (field) ->
-        field.name
-
-fieldTypes = (fields) ->
-    fields.map (field) ->
-        transformType field.type
+toTableauSchema = (fields)->
+    fields.map (field)-> {id: field.name, type: transformType(field.type) }
 
 wdc_base.make_tableau_connector
     steps:
@@ -58,7 +53,7 @@ wdc_base.make_tableau_connector
             wdc_base.set_connection_data data
             tableau.submit()
 
-    columns: (connection_data) ->
+    columns: (connection_data, schemaCallback) ->
         connectionUrl = window.location.protocol + '//' + window.location.host + '/sap/tabledefinitions'
         config = JSON.parse(tableau.password)
         config.wsdl = connection_data.wsdl
@@ -69,12 +64,12 @@ wdc_base.make_tableau_connector
             data: config
             success: (data, textStatus, request)->
                 if data?.length > 0
-                    tableau.headersCallback fieldNames(data), fieldTypes(data)
+                    schemaCallback toTableauSchema(data)
             error: (err) ->
                 console.log "Error:", err
         $.ajax xhr_params
 
-    rows: (connection_data) ->
+    rows: (connection_data, table, doneCallback) ->
         connectionUrl = window.location.protocol + '//' + window.location.host + '/sap/tablerows'
         config = JSON.parse(tableau.password)
         config.wsdl = connection_data.wsdl
@@ -85,7 +80,9 @@ wdc_base.make_tableau_connector
             dataType: 'json'
             data: config
             success: (data, textStatus, request)->
-                tableau.dataCallback data, "", false
+                table.appendRows(data)
+                doneCallback()
+                #doneCallback data, "", false
             error: (err) ->
                 console.log "Rows Error:", err
         $.ajax xhr_params
