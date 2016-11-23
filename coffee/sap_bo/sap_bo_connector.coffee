@@ -11,7 +11,7 @@ transformType = (type) ->
         else tableau.dataTypeEnum.string
 
 toTableauSchema = (fields)->
-    fields.map (field)-> {id: field.name, type: transformType(field.type) }
+    fields.map (field)-> {id: field.name, dataType: transformType(field.type) }
 
 wdc_base.make_tableau_connector
     steps:
@@ -64,7 +64,10 @@ wdc_base.make_tableau_connector
             data: config
             success: (data, textStatus, request)->
                 if data?.length > 0
-                    schemaCallback toTableauSchema(data)
+                    schemaCallback [
+                      id: config.table,
+                      columns: toTableauSchema(data)
+                    ]
             error: (err) ->
                 console.log "Error:", err
         $.ajax xhr_params
