@@ -2,6 +2,10 @@ $ = require 'jquery'
 _ = require 'underscore'
 wdc_base = require '../connector_base/starschema_wdc_base.coffee'
 
+PROXY_SERVER_CONFIG =
+	protocol: 'https'
+	port: 3000
+
 transformType = (type) ->
     switch type
         when 'STRING' then tableau.dataTypeEnum.string
@@ -31,7 +35,7 @@ wdc_base.make_tableau_connector
 
         "enter configuration": (data) ->
             $.ajax
-                url: "#{window.location.protocol}//#{window.location.host}/sap/tablelist"
+                url: "#{PROXY_SERVER_CONFIG.protocol}://#{window.location.host}:#{PROXY_SERVER_CONFIG.port}/sap/tablelist"
                 dataType: 'json'
                 data:
                     "wsdl": data.wsdl
@@ -54,7 +58,7 @@ wdc_base.make_tableau_connector
             tableau.submit()
 
     columns: (connection_data, schemaCallback) ->
-        connectionUrl = window.location.protocol + '//' + window.location.host + '/sap/tabledefinitions'
+        connectionUrl = "#{PROXY_SERVER_CONFIG.protocol}://#{window.location.host}:#{PROXY_SERVER_CONFIG.port}/sap/tabledefinitions"
         config = JSON.parse(tableau.password)
         config.wsdl = connection_data.wsdl
         config.table = connection_data.table

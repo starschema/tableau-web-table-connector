@@ -2,9 +2,22 @@ express = require 'express'
 cors = require 'cors'
 http_request = require 'request'
 sap = require 'bobj-access'
+fs = require('fs')
+https = require('https')
+http = require('http')
+
+SERVER_CONFIG =
+  ssl: true
+  privateKey: 'cert.key'
+  certificate: 'cert.crt'
+  port:3000
+
 
 app = express()
 app.use(cors())
+
+
+
 
 
 app.get '/', (req, res)-> res.send("<h1>Hello</h1>")
@@ -39,8 +52,16 @@ app.get '/sap/tablerows', (req, res) ->
 # serve the static files of the connector
 app.use(express.static('dist'))
 
-server = app.listen 3000, ->
-  host = server.address().address
-  port = server.address().port
 
-  console.log('SAP BO Connection Server listening at http://%s:%s', host, port)
+if SERVER_CONFIG.ssl
+    fsr = fs.readFileSync
+    https.createServer({key: fsr(SERVER_CONFIG.privateKey), cert: fsr(SERVER_CONFIG.certificate)}, app).listen SERVER_CONFIG.port, ()->
+      console.log("SAP BO server listening on port https " + SERVER_CONFIG.port);
+
+
+else
+    server = app.listen SERVER_CONFIG.port, ->
+      host = server.address().address
+      port = server.address().port
+
+    console.log('SAP BO Connection Server listening at http://%s:%s', host, port)
