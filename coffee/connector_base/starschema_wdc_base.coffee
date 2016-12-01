@@ -81,11 +81,12 @@ set_connection_data = (cd)-> tableau.connectionData = JSON.stringify( cd )
 build_tableau_connector = (description)->
   connector = tableau.makeConnector()
 
-  connector.getColumnHeaders = ->
-    description.columns(get_connection_data())
+  #connector.getColumnHeaders = ->
+  connector.getSchema = (schemaCallback)->
+    description.columns(get_connection_data(), schemaCallback)
 
-  connector.getTableData = (lastRecordToken)->
-    description.rows( get_connection_data(), lastRecordToken)
+  connector.getData = (table, doneCallback)->
+    description.rows( get_connection_data(), table, doneCallback)
 
   tableau.registerConnector(connector)
 

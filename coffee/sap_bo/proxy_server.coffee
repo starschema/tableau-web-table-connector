@@ -15,6 +15,7 @@ app.get '/sap/tablelist', (req, res) ->
             res.json tableList
             console.log "Table list response sent", tableList
         else
+            console.log("ERROR:", err, err.stack)
             res.status(500).send()
 
 app.get '/sap/tabledefinitions', (req, res) ->
@@ -23,6 +24,7 @@ app.get '/sap/tabledefinitions', (req, res) ->
             res.json tables
             console.log "Table definition response sent. table: ", req.query.table
         else
+            console.log("ERROR:", err, err.stack)
             res.status(500).send()
 
 app.get '/sap/tablerows', (req, res) ->
@@ -31,6 +33,7 @@ app.get '/sap/tablerows', (req, res) ->
             res.json tables
             console.log "Data Response sent.table: ", req.query.table
         else
+            console.log("ERROR:", err, err.stack)
             res.status(500).send()
 
 # serve the static files of the connector
