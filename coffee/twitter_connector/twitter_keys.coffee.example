@@ -1,8 +1,0 @@
-# RENAME ME TO twitter_keys.coffee after filling the keys
-
-module.exports =
-  CONSUMER_KEY:	""
-  CONSUMER_SECRET:	""
-  ACCESS_TOKEN: ""
-  ACCESS_TOKEN_SECRET: ""
-
