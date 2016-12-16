@@ -5518,7 +5518,7 @@ module.exports = {
 
 
 },{"underscore":41}],31:[function(require,module,exports){
-var $, _, csv, load_csv, tableauHelpers, wdc_base;
+var $, _, aliasToId, csv, load_csv, tableauHelpers, wdc_base;
 
 $ = require('jquery');
 
@@ -5555,6 +5555,10 @@ load_csv = function(url, params, success_callback) {
   });
 };
 
+aliasToId = function(alias) {
+  return alias.replace(/[^A-Za-z0-9]+/g, "_");
+};
+
 wdc_base.make_tableau_connector({
   name: "Simple CSV connector",
   steps: {
@@ -5577,7 +5581,14 @@ wdc_base.make_tableau_connector({
   rows: function(connection_data, table, doneCallback) {
     console.log("Connection data", connection_data);
     return load_csv(connection_data.url, connection_data, function(data) {
-      table.appendRows(data);
+      table.appendRows(data.map(function(row) {
+        var o;
+        o = {};
+        Object.keys(row).forEach(function(k) {
+          return o[aliasToId(k)] = row[k];
+        });
+        return o;
+      }));
       return doneCallback();
     });
   },
@@ -5593,7 +5604,8 @@ wdc_base.make_tableau_connector({
           id: "CSV",
           columns: Object.keys(first_row).map(function(key) {
             return {
-              id: key,
+              alias: key,
+              id: aliasToId(key),
               dataType: tableauHelpers.guessDataType(first_row[key])
             };
           })
