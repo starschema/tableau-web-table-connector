@@ -32,6 +32,7 @@ load_csv = (url, params, success_callback)->
     error: (xhr, ajaxOptions, thrownError)->
       tableau.abortWithError "Error while trying to load '#{url}'. #{thrownError}"
 
+aliasToId = (alias)-> alias.replace(/[^A-Za-z0-9]+/g, "_")
 
 wdc_base.make_tableau_connector
   name: "Simple CSV connector"
@@ -55,7 +56,14 @@ wdc_base.make_tableau_connector
     console.log("Connection data", connection_data)
 
     load_csv connection_data.url, connection_data, (data)->
-      table.appendRows(data)
+      # Convert the columns aliases to ids
+      table.appendRows(data.map( (row)->
+        o = {}
+        Object.keys(row).forEach (k)->
+          o[aliasToId(k)] = row[k]
+        return o
+      ))
+
       ## Call back tableau
       doneCallback()
 
@@ -71,8 +79,8 @@ wdc_base.make_tableau_connector
       # Call back tableau
       schemaCallback [
         id: "CSV"
-        # Guess the datatype for each column 
+        # Guess the datatype for each column
         columns: Object.keys(first_row).map (key)->
-          { id: key, dataType: tableauHelpers.guessDataType( first_row[key] ) }
+          { alias: key, id: aliasToId(key) , dataType: tableauHelpers.guessDataType( first_row[key] ) }
       ]
 
