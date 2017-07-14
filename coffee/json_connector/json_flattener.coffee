@@ -32,7 +32,7 @@ remap = (obj, base_key=null)->
   base_row = {}
 
   # The function to retrieve the key
-  key = if base_key then  (k) -> "#{base_key}.#{k}" else (k) -> k
+  key = if base_key then  (k) -> "#{base_key}_#{k}" else (k) -> k
 
   # First add primitive values
   for k,v of obj

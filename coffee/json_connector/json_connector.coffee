@@ -7,6 +7,7 @@ json_flattener = require './json_flattener.coffee'
 
 
 load_jsonp = (url, success_callback)->
+  console.log("Getting URL", url)
   $.ajax
     url: url
     #async: false
@@ -14,9 +15,14 @@ load_jsonp = (url, success_callback)->
     contentType: "application/json",
     # dataType: 'jsonp',
     success: (data, textStatus, request)->
-      success_callback(json_flattener.remap(data))
+      console.log("Got url", url)
+      console.log("Got data", data)
+      flat = json_flattener.remap(data)
+      console.log("Flattened", flat)
+      success_callback(flat)
 
     error: (xhr, ajaxOptions, thrownError)->
+      console.error("Got error", thrownError)
       tableau.abortWithError "Error while trying to load '#{url}'. #{thrownError}"
 
 JSONP_CALLBACK_NAME = "jsondb_wdc_jsonp_callback"
