@@ -1,6 +1,6 @@
 # Starschema Tableau Web Table Connector (WDC) Toolkit / ConnectorBase [![Build Status](https://travis-ci.org/starschema/tableau-web-table-connector.svg)](https://travis-ci.org/starschema/tableau-web-table-connector)
 
-Starschema's Tableau Web Table Connector Toolkit enables you to develop Web Data Connectors in CoffeeScript more easily, elegantly. It comes with sample connectors for **SAP BusinessObjects. Twitter, MongoDB, Github and generic CSV**. 
+Starschema's Tableau Web Table Connector Toolkit enables you to develop Web Data Connectors in CoffeeScript more easily, elegantly. It comes with sample connectors for **SAP BusinessObjects. Twitter, MongoDB, Github and generic CSV**.
 
 The framework (or as we call _ConnectorBase_) has a few concepts that may feel different to the usual WDC development process:
 
@@ -17,11 +17,11 @@ The framework (or as we call _ConnectorBase_) has a few concepts that may feel d
 
 ## Building the connector
 
-You should never trust any tableau connector on the internet. Check the source codes before you deploy or run anything on your environment. Therefore we don't provide any "prebuilt" connector, you should do it for yourselves. 
+You should never trust any tableau connector on the internet. Check the source codes before you deploy or run anything on your environment. Therefore we don't provide any "prebuilt" connector, you should do it for yourselves.
 
 ### The necessary steps to compile
 
-- download node.js and install it (https://nodejs.org/en/) 
+- download node.js and install it (https://nodejs.org/en/)
 - Update NPM by typing "npm install npm -g"
 - Install Coffee "npm install -g coffee-script" (CoffeeScript is a little language that compiles into JavaScript.)
 - Download the tableau-web-table-connector zip, and extract into a directory
@@ -31,7 +31,7 @@ You should never trust any tableau connector on the internet. Check the source c
 - run "coffee coffee/sap_bo/proxy_server.coffee" from the administrator command shell while in the extracted directory
 
 
-this copies the resources and builds the client using browserify. For more information on how to use SAP BusinessObjects connection [check out this article](http://databoss.starschema.net/accessing-sap-businessobjects-from-tableau-using-web-data-connector/). 
+this copies the resources and builds the client using browserify. For more information on how to use SAP BusinessObjects connection [check out this article](http://databoss.starschema.net/accessing-sap-businessobjects-from-tableau-using-web-data-connector/).
 
 ## Running the BO proxy web service
 
@@ -40,7 +40,7 @@ coffee coffee/sap_bo/proxy_server.coffee
 ```
 
 Then navigate to ```http://localhost:3000/sapbo.html``` in the
-Simulator / Tableau. 
+Simulator / Tableau.
 
 # Building the twitter client
 
@@ -60,7 +60,17 @@ coffee coffee/twitter_connector/twitter_auth_server.coffee
 Then navigate to ```http://localhost:3000/twitter.html``` in the
 Simulator / Tableau.
 
-# Building the mongo/raw json client
+# Building the raw json client
+
+```
+npm install
+./build-json.sh
+```
+
+this copies the resources and builds the client using browserify.
+
+
+# Building the mongo json client
 
 Connecting to mongodb using the Simple REST API requires starting the
 mongod server with the ```--rest``` and ```--jsonp``` command line
