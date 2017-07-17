@@ -24,16 +24,12 @@ stateMachine = (startState, stateList, transitionHandlers={})->
   # Transition to a new state and use the history to figure out which
   # state we came from
   transitionTo = (to, withData={})->
-    console.log("transitionTo: ", to, stateList)
     return unless _.contains(stateList, to)
     from = _.last history
-    console.log("transitionTo2: ", to, from)
     return if to == from
-    console.log("transitionTo3: ", to)
     _.extend data, withData
     history.push(to)
     runTransitions(from, to, ["leave #{from}", nameOf(from,to),"*", "enter #{to}"])
-    console.log("transitionTo4: ", to)
 
   # Go back in history
   goBack = (n)-> transitionTo(_.last( history,n)[0] )
@@ -51,7 +47,6 @@ stateMachine = (startState, stateList, transitionHandlers={})->
 #
 wizzard = (startState, steps, transitionHandlers={})->
   $steps = (name)-> $(steps[name])
-  console.log("steps:", steps)
   handlers = _.extend {}, transitionHandlers,
     "*": (data,from,to)->
       $steps(from).fadeOut(100)
@@ -65,7 +60,6 @@ wizzard = (startState, steps, transitionHandlers={})->
     $('body').on 'click', '*[data-state-to]', (e)->
       e.preventDefault()
       transitions = $(this).data('state-to').split(/ +/)
-      console.log("transition req:", transitions, sm)
       for to in transitions
         switch
           when to == ':back' then sm.back(1)
