@@ -14,7 +14,7 @@ stateMachine = (startState, stateList, transitionHandlers={})->
       transition = transitionHandlers[name]
       continue unless transition
       console.log("Running transition handler[#{from} -> #{to}]: #{name}")
-      transition(data,from,to)
+      transition(data,from,to, transitionTo)
 
   # Shortcut for getting a transitions name
   nameOf = (from,to)-> "#{from} > #{to}"
@@ -24,12 +24,16 @@ stateMachine = (startState, stateList, transitionHandlers={})->
   # Transition to a new state and use the history to figure out which
   # state we came from
   transitionTo = (to, withData={})->
+    console.log("transitionTo: ", to, stateList)
     return unless _.contains(stateList, to)
     from = _.last history
+    console.log("transitionTo2: ", to, from)
     return if to == from
+    console.log("transitionTo3: ", to)
     _.extend data, withData
-    runTransitions(from, to, ["leave #{from}", nameOf(from,to),"*", "enter #{to}"])
     history.push(to)
+    runTransitions(from, to, ["leave #{from}", nameOf(from,to),"*", "enter #{to}"])
+    console.log("transitionTo4: ", to)
 
   # Go back in history
   goBack = (n)-> transitionTo(_.last( history,n)[0] )

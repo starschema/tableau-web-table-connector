@@ -3,8 +3,7 @@ _ = require 'underscore'
 wdc_base = require '../connector_base/starschema_wdc_base.coffee'
 
 PROXY_SERVER_CONFIG =
-	protocol: 'https'
-	port: 3000
+	protocol: 'http'
 
 transformType = (type) ->
     switch type
@@ -27,23 +26,32 @@ wdc_base.make_tableau_connector
             template: require './run.jade'
 
     transitions:
+        "enter start": (data)->
+          if data.error
+            $('#error').show().text(data.error)
+          else
+            $('#error').hide().text()
+
         "start > configuration": (data) ->
             _.extend data, wdc_base.fetch_inputs("#state-start")
 
         "configuration > run": (data) ->
             _.extend data, wdc_base.fetch_inputs("#state-configuration")
 
-        "enter configuration": (data) ->
+        "enter configuration": (data, from,to, transitionTo) ->
+            url = "#{PROXY_SERVER_CONFIG.protocol}://#{window.location.host}/sap/tablelist"
             $.ajax
-                url: "#{PROXY_SERVER_CONFIG.protocol}://#{window.location.host}:#{PROXY_SERVER_CONFIG.port}/sap/tablelist"
+                url: url
                 dataType: 'json'
                 data:
                     "wsdl": data.wsdl
                 success: (data, textStatus, request) ->
                     for table in data
-                        $("<option>").val(table).text(table).appendTo('#tables');
-                error: (err) ->
-                    console.log "Error:", err
+                        $("<option>").val(table).text(table).appendTo('#tables')
+                error: (o, statusStr, err) ->
+                    console.log o
+                    console.error err
+                    transitionTo "start", error: "While fetching '#{url}':\n#{o.responseText}\n#{err}"
 
         "enter run": (data) ->
             tableau.password = JSON.stringify
@@ -73,7 +81,7 @@ wdc_base.make_tableau_connector
                       columns: toTableauSchema(data)
                     ]
             error: (err) ->
-                console.log "Error:", err
+                console.error "Error:", err
         $.ajax xhr_params
 
     rows: (connection_data, table, doneCallback) ->
@@ -89,7 +97,6 @@ wdc_base.make_tableau_connector
             success: (data, textStatus, request)->
                 table.appendRows(data)
                 doneCallback()
-                #doneCallback data, "", false
             error: (err) ->
-                console.log "Rows Error:", err
+                console.error "Rows Error:", err
         $.ajax xhr_params

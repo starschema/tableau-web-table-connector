@@ -6,19 +6,13 @@ wdc_base = require '../connector_base/starschema_wdc_base.coffee'
 json_flattener = require './json_flattener.coffee'
 
 
-load_jsonp = (url, success_callback)->
+load_json = (url, success_callback)->
   console.log("Getting URL", url)
   $.ajax
     url: url
-    #async: false
-    # jsonpCallback: JSONP_CALLBACK_NAME
     contentType: "application/json",
-    # dataType: 'jsonp',
     success: (data, textStatus, request)->
-      console.log("Got url", url)
-      console.log("Got data", data)
       flat = json_flattener.remap(data)
-      console.log("Flattened", flat)
       success_callback(flat)
 
     error: (xhr, ajaxOptions, thrownError)->
@@ -46,45 +40,19 @@ wdc_base.make_tableau_connector
       tableau.submit()
 
   rows: (data, table, doneCallback)->
-    # offset_str = if lastRecordToken == "" then 0 else lastRecordToken
-    # offseted_url = "#{connection_data.url}&skip=#{offset_str}"
-    #
-
-
-    load_jsonp data.url, (rows)->
-
-
-        # for (var i = 0, len = feat.length; i < len; i++) {
-        #     tableData.push({
-        #         "id": feat[i].id,
-        #         "mag": feat[i].properties.mag,
-        #         "title": feat[i].properties.title,
-        #         "lon": feat[i].geometry.coordinates[0],
-        #         "lat": feat[i].geometry.coordinates[1]
-        #     });
-        # }
-
-        console.log("ROWS are:", rows.rows)
+    load_json data.url, (rows)->
         table.appendRows(rows.rows)
         doneCallback()
-      # Remap each row
-      # tableau_data = for row in rows
-      #   json_flattener.remap(row, null).rows
-
-      # Call back tableau
-      # doneCallback(_.flatten(tableau_data), "", false)
 
 
   columns: (connection_data, schemaCallback)->
 
-    load_jsonp connection_data.url, (data)->
+    load_json connection_data.url, (data)->
       tableau.abortWithError("No rows available in data") if _.isEmpty(data)
 
       first_row = _.first(data.rows)
       dataTypes = _.map first_row, (v,k,o)->
         { id: k, dataType: tableauHelpers.guessDataType(v)}
-
-      console.log("DATATYPES:", dataTypes)
 
       tableInfo = {
         id : "json"
