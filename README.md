@@ -10,8 +10,16 @@ The framework (or as we call _ConnectorBase_) has a few concepts that may feel d
 
  - The connector source code defines the JavaScript to be ran during transitions from one state to another. (like get the data from all the inputs and call tableau.submit() when transitioning from the start state to the run state.)
 
-# Business Objects connector
 
+# WDC version targets
+
+* `Raw JSON` : WDC2
+* `SAP BO WebI` : WDC2 in progress
+* `Twitter` : WDC1
+* `MongoDb` : WDC1
+
+
+# Business Objects connector
 
 ![](http://www.virtdb.com/images/bo-wdc-tableau.gif)
 
