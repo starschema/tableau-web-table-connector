@@ -14,7 +14,7 @@ stateMachine = (startState, stateList, transitionHandlers={})->
       transition = transitionHandlers[name]
       continue unless transition
       console.log("Running transition handler[#{from} -> #{to}]: #{name}")
-      transition(data,from,to)
+      transition(data,from,to, transitionTo)
 
   # Shortcut for getting a transitions name
   nameOf = (from,to)-> "#{from} > #{to}"
@@ -28,8 +28,8 @@ stateMachine = (startState, stateList, transitionHandlers={})->
     from = _.last history
     return if to == from
     _.extend data, withData
-    runTransitions(from, to, ["leave #{from}", nameOf(from,to),"*", "enter #{to}"])
     history.push(to)
+    runTransitions(from, to, ["leave #{from}", nameOf(from,to),"*", "enter #{to}"])
 
   # Go back in history
   goBack = (n)-> transitionTo(_.last( history,n)[0] )
@@ -47,7 +47,6 @@ stateMachine = (startState, stateList, transitionHandlers={})->
 #
 wizzard = (startState, steps, transitionHandlers={})->
   $steps = (name)-> $(steps[name])
-  console.log("steps:", steps)
   handlers = _.extend {}, transitionHandlers,
     "*": (data,from,to)->
       $steps(from).fadeOut(100)
@@ -61,7 +60,6 @@ wizzard = (startState, steps, transitionHandlers={})->
     $('body').on 'click', '*[data-state-to]', (e)->
       e.preventDefault()
       transitions = $(this).data('state-to').split(/ +/)
-      console.log("transition req:", transitions, sm)
       for to in transitions
         switch
           when to == ':back' then sm.back(1)

@@ -1,9 +1,13 @@
 _ = require 'underscore'
 
-STRING = tableau.dataTypeEnum.string
-INT = tableau.dataTypeEnum.int
-FLOAT = tableau.dataTypeEnum.float
-DATE = tableau.dataTypeEnum.date
+STRING = "string"
+INT = "int"
+FLOAT = "float"
+DATE = "date"
+# STRING = tableau.dataTypeEnum.string
+# INT = tableau.dataTypeEnum.int
+# FLOAT = tableau.dataTypeEnum.float
+# DATE = tableau.dataTypeEnum.date
 # We need to map the source column data type to tableau column
 # data type. This function tries to figure out the type based on
 # its value.
@@ -24,3 +28,7 @@ getJsonType = (value)-> switch
 module.exports =
   guessDataType: guessDataType
   getJsonType: getJsonType
+  INT: INT
+  FLOAT: FLOAT
+  DATE: DATE
+  STRING: STRING

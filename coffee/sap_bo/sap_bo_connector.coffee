@@ -1,10 +1,10 @@
 $ = require 'jquery'
 _ = require 'underscore'
+helpers = require '../connector_base/tableau_helpers'
 wdc_base = require '../connector_base/starschema_wdc_base.coffee'
 
 PROXY_SERVER_CONFIG =
-	protocol: 'https'
-	port: 3000
+	protocol: 'http'
 
 transformType = (type) ->
     switch type
@@ -14,8 +14,27 @@ transformType = (type) ->
         when 'DATE' then tableau.dataTypeEnum.date
         else tableau.dataTypeEnum.string
 
+
+# Attempts to convert a list of fields to a table schema compatible
+# with tableau
 toTableauSchema = (fields)->
-    fields.map (field)-> {id: field.name, dataType: transformType(field.type) }
+    fields.map (field)-> {id: sanitizeId(field.name), dataType: transformType(field.type) }
+
+makeRowConverter = (header)->
+  converters = {}
+  Object.keys(header).map (k)->
+    converters[k] = switch helpers.guessDataType( header[k] )
+        when helpers.INT then parseInt
+        when helpers.FLOAT then parseFloat
+        else (x)-> x
+
+  (row) ->
+    Object.keys(row).map (k)->
+      converters[k](row[k])
+
+#  Replaces any non-id characters with an underscore
+sanitizeId = (name)->
+  name.replace(/[^a-zA-Z0-9_]/g, '_')
 
 wdc_base.make_tableau_connector
     steps:
@@ -27,23 +46,32 @@ wdc_base.make_tableau_connector
             template: require './run.jade'
 
     transitions:
+        "enter start": (data)->
+          if data.error
+            $('#error').show().text(data.error)
+          else
+            $('#error').hide().text()
+
         "start > configuration": (data) ->
             _.extend data, wdc_base.fetch_inputs("#state-start")
 
         "configuration > run": (data) ->
             _.extend data, wdc_base.fetch_inputs("#state-configuration")
 
-        "enter configuration": (data) ->
+        "enter configuration": (data, from,to, transitionTo) ->
+            url = "#{PROXY_SERVER_CONFIG.protocol}://#{window.location.host}/sap/tablelist"
             $.ajax
-                url: "#{PROXY_SERVER_CONFIG.protocol}://#{window.location.host}:#{PROXY_SERVER_CONFIG.port}/sap/tablelist"
+                url: url
                 dataType: 'json'
                 data:
                     "wsdl": data.wsdl
                 success: (data, textStatus, request) ->
                     for table in data
-                        $("<option>").val(table).text(table).appendTo('#tables');
-                error: (err) ->
-                    console.log "Error:", err
+                        $("<option>").val(table).text(table).appendTo('#tables')
+                error: (o, statusStr, err) ->
+                    console.log o
+                    console.error err
+                    transitionTo "start", error: "While fetching '#{url}':\n#{o.responseText}\n#{err}"
 
         "enter run": (data) ->
             tableau.password = JSON.stringify
@@ -58,7 +86,7 @@ wdc_base.make_tableau_connector
             tableau.submit()
 
     columns: (connection_data, schemaCallback) ->
-        connectionUrl = "#{PROXY_SERVER_CONFIG.protocol}://#{window.location.host}:#{PROXY_SERVER_CONFIG.port}/sap/tabledefinitions"
+        connectionUrl = "#{PROXY_SERVER_CONFIG.protocol}://#{window.location.host}/sap/tabledefinitions"
         config = JSON.parse(tableau.password)
         config.wsdl = connection_data.wsdl
         config.table = connection_data.table
@@ -69,11 +97,11 @@ wdc_base.make_tableau_connector
             success: (data, textStatus, request)->
                 if data?.length > 0
                     schemaCallback [
-                      id: config.table,
+                      id: sanitizeId(config.table),
                       columns: toTableauSchema(data)
                     ]
             error: (err) ->
-                console.log "Error:", err
+                console.error "Error while loading headers from `#{connectionUrl}`:", err
         $.ajax xhr_params
 
     rows: (connection_data, table, doneCallback) ->
@@ -87,9 +115,11 @@ wdc_base.make_tableau_connector
             dataType: 'json'
             data: config
             success: (data, textStatus, request)->
-                table.appendRows(data)
-                doneCallback()
-                #doneCallback data, "", false
+              if data.length > 0
+                converter = makeRowConverter data[0]
+                table.appendRows(data.map(converter))
+
+              doneCallback()
             error: (err) ->
-                console.log "Rows Error:", err
+                console.error "Error while loading rows from `#{connectionUrl}`:", err
         $.ajax xhr_params
