@@ -13,8 +13,16 @@ transformType = (type) ->
         when 'DATE' then tableau.dataTypeEnum.date
         else tableau.dataTypeEnum.string
 
+
+# Attempts to convert a list of fields to a table schema compatible
+# with tableau
 toTableauSchema = (fields)->
-    fields.map (field)-> {id: field.name, dataType: transformType(field.type) }
+    fields.map (field)-> {id: sanitizeId(field.name), dataType: transformType(field.type) }
+
+
+#  Replaces any non-id characters with an underscore
+sanitizeId = (name)->
+  name.replace(/[^a-zA-Z0-9_]/g, '_')
 
 wdc_base.make_tableau_connector
     steps:
@@ -66,7 +74,7 @@ wdc_base.make_tableau_connector
             tableau.submit()
 
     columns: (connection_data, schemaCallback) ->
-        connectionUrl = "#{PROXY_SERVER_CONFIG.protocol}://#{window.location.host}:#{PROXY_SERVER_CONFIG.port}/sap/tabledefinitions"
+        connectionUrl = "#{PROXY_SERVER_CONFIG.protocol}://#{window.location.host}/sap/tabledefinitions"
         config = JSON.parse(tableau.password)
         config.wsdl = connection_data.wsdl
         config.table = connection_data.table
@@ -77,11 +85,11 @@ wdc_base.make_tableau_connector
             success: (data, textStatus, request)->
                 if data?.length > 0
                     schemaCallback [
-                      id: config.table,
+                      id: sanitizeId(config.table),
                       columns: toTableauSchema(data)
                     ]
             error: (err) ->
-                console.error "Error:", err
+                console.error "Error while loading headers from `#{connectionUrl}`:", err
         $.ajax xhr_params
 
     rows: (connection_data, table, doneCallback) ->
@@ -98,5 +106,5 @@ wdc_base.make_tableau_connector
                 table.appendRows(data)
                 doneCallback()
             error: (err) ->
-                console.error "Rows Error:", err
+                console.error "Error while loading rows from `#{connectionUrl}`:", err
         $.ajax xhr_params
