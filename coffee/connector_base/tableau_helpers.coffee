@@ -28,3 +28,7 @@ getJsonType = (value)-> switch
 module.exports =
   guessDataType: guessDataType
   getJsonType: getJsonType
+  INT: INT
+  FLOAT: FLOAT
+  DATE: DATE
+  STRING: STRING

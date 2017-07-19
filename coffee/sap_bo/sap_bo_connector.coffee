@@ -1,5 +1,6 @@
 $ = require 'jquery'
 _ = require 'underscore'
+helpers = require '../connector_base/tableau_helpers'
 wdc_base = require '../connector_base/starschema_wdc_base.coffee'
 
 PROXY_SERVER_CONFIG =
@@ -19,6 +20,17 @@ transformType = (type) ->
 toTableauSchema = (fields)->
     fields.map (field)-> {id: sanitizeId(field.name), dataType: transformType(field.type) }
 
+makeRowConverter = (header)->
+  converters = {}
+  Object.keys(header).map (k)->
+    converters[k] = switch helpers.guessDataType( header[k] )
+        when helpers.INT then parseInt
+        when helpers.FLOAT then parseFloat
+        else (x)-> x
+
+  (row) ->
+    Object.keys(row).map (k)->
+      converters[k](row[k])
 
 #  Replaces any non-id characters with an underscore
 sanitizeId = (name)->
@@ -103,8 +115,11 @@ wdc_base.make_tableau_connector
             dataType: 'json'
             data: config
             success: (data, textStatus, request)->
-                table.appendRows(data)
-                doneCallback()
+              if data.length > 0
+                converter = makeRowConverter data[0]
+                table.appendRows(data.map(converter))
+
+              doneCallback()
             error: (err) ->
                 console.error "Error while loading rows from `#{connectionUrl}`:", err
         $.ajax xhr_params
