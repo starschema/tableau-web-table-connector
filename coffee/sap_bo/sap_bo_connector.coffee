@@ -1,17 +1,22 @@
 $ = require 'jquery'
 _ = require 'underscore'
+dateFormat = require('dateformat')
 helpers = require '../connector_base/tableau_helpers'
 wdc_base = require '../connector_base/starschema_wdc_base.coffee'
 
 PROXY_SERVER_CONFIG =
 	protocol: 'http'
 
+rowConverter = {}
+
+# Transforms type to tableau type
 transformType = (type) ->
     switch type
         when 'STRING' then tableau.dataTypeEnum.string
         when 'DOUBLE', 'FLOAT' then  tableau.dataTypeEnum.float
         when 'INT32', 'INT64', 'UINT32', 'UINT64' then tableau.dataTypeEnum.int
         when 'DATE' then tableau.dataTypeEnum.date
+        when 'DATETIME' then tableau.dataTypeEnum.datetime
         else tableau.dataTypeEnum.string
 
 
@@ -20,17 +25,17 @@ transformType = (type) ->
 toTableauSchema = (fields)->
     fields.map (field)-> {id: sanitizeId(field.name), dataType: transformType(field.type) }
 
-makeRowConverter = (header)->
-  converters = {}
-  Object.keys(header).map (k)->
-    converters[k] = switch helpers.guessDataType( header[k] )
-        when helpers.INT then parseInt
-        when helpers.FLOAT then parseFloat
-        else (x)-> x
-
-  (row) ->
-    Object.keys(row).map (k)->
-      converters[k](row[k])
+# Creates a converter from the given schema
+makeRowConverter = (schema) ->
+    converters = {}
+    Object.keys(schema).map (k)->
+        converters[schema[k].id] = switch schema[k].dataType
+            when tableau.dataTypeEnum.datetime then (x) -> dateFormat(new Date(x), "yyyy-mm-dd HH:MM:ss")
+            when tableau.dataTypeEnum.date then (x) -> dateFormat(new Date(x), "yyyy-mm-dd")
+            else (x)-> x
+    (row) ->
+        Object.keys(row).map (k)->
+            converters[sanitizeId k](row[k])
 
 #  Replaces any non-id characters with an underscore
 sanitizeId = (name)->
@@ -96,12 +101,15 @@ wdc_base.make_tableau_connector
             data: config
             success: (data, textStatus, request)->
                 if data?.length > 0
+                    schema = toTableauSchema(data)
+                    rowConverter = makeRowConverter schema
                     schemaCallback [
                       id: sanitizeId(config.table),
-                      columns: toTableauSchema(data)
+                      columns: schema
                     ]
             error: (err) ->
                 console.error "Error while loading headers from `#{connectionUrl}`:", err
+                tableau.abortWithError err.responseText
         $.ajax xhr_params
 
     rows: (connection_data, table, doneCallback) ->
@@ -116,10 +124,10 @@ wdc_base.make_tableau_connector
             data: config
             success: (data, textStatus, request)->
               if data.length > 0
-                converter = makeRowConverter data[0]
-                table.appendRows(data.map(converter))
+                table.appendRows(data.map(rowConverter))
 
               doneCallback()
             error: (err) ->
                 console.error "Error while loading rows from `#{connectionUrl}`:", err
+                tableau.abortWithError err.responseText
         $.ajax xhr_params
