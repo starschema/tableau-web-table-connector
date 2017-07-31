@@ -41,6 +41,18 @@ You should never trust any tableau connector on the internet. Check the source c
 
 this copies the resources and builds the client using browserify. For more information on how to use SAP BusinessObjects connection [check out this article](http://databoss.starschema.net/accessing-sap-businessobjects-from-tableau-using-web-data-connector/).
 
+### Testing
+
+[Serve](https://www.npmjs.com/package/serve) your preferred WDC on HTTP.
+
+Get the WDC SDK, follow setup instructions, open the simulator in your browser, enter the WDC URL. See: [https://tableau.github.io/webdataconnector/](https://tableau.github.io/webdataconnector/)
+
+
+### Adding the WDC to Tableau
+
+See [http://tableau.github.io/webdataconnector/docs/wdc_use_in_tableau](http://tableau.github.io/webdataconnector/docs/wdc_use_in_tableau)
+
+
 ## Running the BO proxy web service
 
 ```
