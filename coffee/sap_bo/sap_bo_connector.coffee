@@ -30,8 +30,8 @@ makeRowConverter = (schema) ->
     converters = {}
     Object.keys(schema).map (k)->
         converters[schema[k].id] = switch schema[k].dataType
-            when tableau.dataTypeEnum.datetime then (x) -> dateFormat(new Date(x), "yyyy-mm-dd HH:MM:ss")
-            when tableau.dataTypeEnum.date then (x) -> dateFormat(new Date(x), "yyyy-mm-dd")
+            when tableau.dataTypeEnum.datetime then (x) -> convertToDateString(x, "yyyy-mm-dd HH:MM:ss")
+            when tableau.dataTypeEnum.date then (x) -> convertToDateString(x, "yyyy-mm-dd")
             else (x)-> x
     (row) ->
         Object.keys(row).map (k)->
@@ -40,6 +40,12 @@ makeRowConverter = (schema) ->
 #  Replaces any non-id characters with an underscore
 sanitizeId = (name)->
   name.replace(/[^a-zA-Z0-9_]/g, '_')
+
+# Parse date to a given format
+convertToDateString = (dateString, format) ->
+    date = new Date(dateString)
+    return dateFormat(date, format) if not isNaN(date) and isFinite(date.getTime())
+    dateString
 
 wdc_base.make_tableau_connector
     steps:
