@@ -75,6 +75,9 @@ coffee coffee/twitter_connector/twitter_auth_server.coffee
 Then navigate to ```http://localhost:3000/twitter.html``` in the
 Simulator / Tableau.
 
+#### Error Logging
+Erorr message logs can be found in the projects root directory in the wtc-error.log file.
+
 # Building the raw JSON client
 
 ```
