@@ -5,6 +5,7 @@ sap = require 'bobj-access'
 fs = require('fs')
 https = require('https')
 http = require('http')
+log4js = require('log4js')
 
 SERVER_CONFIG =
   ssl: false
@@ -12,6 +13,17 @@ SERVER_CONFIG =
   certificate: 'cert.crt'
   port:3000
 
+log4js.configure
+  appenders: errFileLog:
+    type: 'file'
+    filename: 'wtc-error.log',
+    maxLogSize: 5242880,
+    backups : 6
+  categories: default:
+    appenders: [ 'errFileLog' ]
+    level: 'error'
+	
+logger = log4js.getLogger 'errFileLog' 
 
 app = express()
 app.use(cors())
@@ -28,7 +40,7 @@ app.get '/sap/tablelist', (req, res) ->
             res.json tableList
             console.log "Table list response sent", tableList
         else
-            console.log("ERROR:", err, err.stack)
+            logger.error err, err.stack
             res.status(500).send("#{err}\n\n#{err.stack}")
 
 app.get '/sap/tabledefinitions', (req, res) ->
@@ -37,7 +49,7 @@ app.get '/sap/tabledefinitions', (req, res) ->
             res.json tables
             console.log "Table definition response sent. table: ", req.query.table
         else
-            console.log("ERROR:", err, err.stack)
+            logger.error err, err.stack
             res.status(500).send("#{err}\n\n#{err.stack}")
 
 app.get '/sap/tablerows', (req, res) ->
@@ -46,7 +58,7 @@ app.get '/sap/tablerows', (req, res) ->
             res.json tables
             console.log "Data Response sent.table: ", req.query.table
         else
-            console.log("ERROR:", err, err.stack)
+            logger.error err, err.stack
             res.status(500).send("#{err}\n\n#{err.stack}")
 
 # serve the static files of the connector

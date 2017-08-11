@@ -24,7 +24,8 @@
     "grunt-browserify": "^3.6.0",
     "jade": "^1.9.2",
     "jasmine": "^2.2.1",
-    "jadeify": "^4.1.0"
+    "jadeify": "^4.1.0",
+    "log4js": "^2.3.3"
   },
   "browserify": {
     "extensions": [
