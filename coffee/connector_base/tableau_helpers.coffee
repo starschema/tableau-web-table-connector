@@ -19,7 +19,7 @@ guessDataType = (value)->
       when value == "true" || value == "false" || value == true || value == false then INT
       when _.isString(value) then STRING
       when isFinite(new Date(value).getTime()) then DATE
-      else STIRNG
+      else STRING
 
 getJsonType = (value)-> switch
   when _.isArray(value) then getJsonType(_.first(value))
